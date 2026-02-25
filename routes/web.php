@@ -15,12 +15,12 @@ Route::get('/clear-cache', function () {
 Route::get('/', function () {
     return view('pages.home');
 })->name('home');
-Route::get('/about', function () {
+Route::get('/about-us', function () {
     return view('pages.aboutus.aboutus');
 })->name('about');
-Route::get('/case-study', function () {
+Route::get('/case-studies', function () {
     return view('pages.casestudy.casestudy');
 })->name('casestudy');
-Route::get('/contact', function () {
+Route::get('/contact-us', function () {
     return view('pages.contactus.contactus');
 })->name('contact');
