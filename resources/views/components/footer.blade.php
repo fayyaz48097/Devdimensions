@@ -263,8 +263,7 @@
                 <div class="widget">
 
                     <div class="office-loc">
-                        {{-- US flag emoji fallback — inline SVG flag ─ or use a real flag image if available --}}
-                        <span style="font-size: 28px; line-height: 1;" aria-label="US flag">🇺🇸</span>
+                        <img src="{{ asset('assets/images/us-flag.png') }}" alt="Pakistan flag" class="flag">
                         <h6>United States</h6>
                     </div>
 
@@ -302,7 +301,7 @@
                 <div class="widget">
 
                     <div class="office-loc">
-                        <span style="font-size: 28px; line-height: 1;" aria-label="Pakistan flag">🇵🇰</span>
+                        <img src="{{ asset('assets/images/pak-flag.png') }}" alt="Pakistan flag" class="flag">
                         <h6>Pakistan</h6>
                     </div>
 
