@@ -11,7 +11,7 @@
 
     <!-- Custom CSS -->
     {{-- <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet"> --}}
-
+    <link rel="icon" href="{{ asset('assets/images/favicon-150x150.jpeg') }}" sizes="32x32">
     <!-- Vite CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

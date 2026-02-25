@@ -1,5 +1,5 @@
 {{-- Hero Section --}}
-<section class="relative w-full  md:pt-[284px] pt-[150px]" style="padding-bottom:  126px ;">
+<section class="relative w-full  md:pt-[284px] pt-[150px] md:pb-[126px]">
 
     {{-- Background Hero Image --}}
     <img src="{{ asset('assets/images/home-hero-1.png') }}" alt="hero background"
