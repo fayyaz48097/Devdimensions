@@ -2,11 +2,10 @@
     <style>
         /* ── Vertical slot-machine text slider ── */
         .we-needs li {
-            font-size: 24px;
+
             color: #D3D3D3;
             list-style: none;
             position: relative;
-            font-family: 'Gilroy-Medium', sans-serif;
             font-weight: 500;
             display: flex;
             align-items: baseline;
@@ -40,7 +39,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-family: 'Gilroy-SemiBold', sans-serif;
+
         }
 
         /* Slot 1 — 3 items cycling */
@@ -163,7 +162,7 @@
             padding: 0 48px 0 20px !important;
             border-radius: 5px;
             background: linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%);
-            font-family: 'Gilroy-Medium', sans-serif;
+
             color: #fff;
             display: inline-block;
             text-decoration: none;
@@ -221,10 +220,8 @@
                 <div style="max-width: 606px; width: 100%;">
 
                     {{-- Heading --}}
-                    <h2
+                    <h2 class="text-4xl md:text-5xl"
                         style="
-                        font-family: 'Gilroy-SemiBold', sans-serif;
-                        font-size: 48px;
                         line-height: normal;
                         letter-spacing: -0.96px;
                         margin-bottom: 20px;
@@ -234,7 +231,7 @@
                     </h2>
 
                     {{-- Subtext --}}
-                    <p style="color: #DBDBDB; font-size: 16px; line-height: 1.5; margin-bottom: 20px;">
+                    <p class="text-sm md:text-[16px]" style="color: #DBDBDB;  line-height: 2; margin-bottom: 20px;">
                         We solve those hiring headaches. No we aren't doctors, just former exited
                         founders with a proven process that has worked for us. From websites,
                         applications, to enterprise solutions, we don't just design + develop;
@@ -242,11 +239,11 @@
                     </p>
 
                     {{-- ── Vertical Text Slider List ── --}}
-                    <ul class="we-needs mt-[44px] mb-0 p-0">
+                    <ul class="we-needs mt-[44px] mb-0 p-0 ">
 
                         {{-- Line 1: I need a [role] --}}
                         <li>
-                            <span class="shrink-0">I need a</span>
+                            <span class=" shrink-0">I need a</span>
                             <div class="slide-hold">
                                 <div class="slide-track tex_slide1">
                                     <span> Full Stack Developer</span>
@@ -287,10 +284,37 @@
                     </ul>
 
                     {{-- CTA Button --}}
-                    <a href="{{ url('/contact-us') }}" class="btn-theme mt-[46px] welcome-section-btn">
+                    <a href="{{ url('/contact-us') }}"
+                        class="relative inline-block mt-5 text-white transition-all duration-300 ease-in-out group"
+                        style="border: 0;
+          
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: capitalize;
+          height: 44px;
+          line-height: 44px;
+         width: 170px;
+          padding: 0 36px 0 20px;
+          border-radius: 5px;
+          background: linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%);
+          text-decoration: none;
+          display: inline-block;"
+                        onmouseover="this.style.background='rgba(181, 30, 23, 1)';"
+                        onmouseout="this.style.background='linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%)'">
+
                         Request Quote
-                        <span class="btn-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white"
+
+                        {{-- Icon Wrapper --}}
+                        <span
+                            class="absolute top-1/2 right-2 -translate-y-1/2 flex items-center justify-center w-[30px] h-[30px]">
+
+                            {{-- Diamond Background Shape (Starts at 0, rotates to 45) --}}
+                            <span
+                                class="absolute inset-0 bg-white/20 rounded-[4px] transition-all duration-300 ease-in-out group-hover:rotate-[45deg] group-hover:bg-white/10"></span>
+
+                            {{-- Arrow Icon (Starts horizontal, rotates to top-right corner) --}}
+                            <svg class="relative z-10 transition-all duration-300 ease-in-out -rotate-45 translate-x-0 group-hover:rotate-0 group-hover:translate-x-0"
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
@@ -304,7 +328,7 @@
             {{-- ── Right Column ── --}}
             <div class="w-full px-3 my-auto lg:w-5/12">
                 <img src="{{ asset('assets/images/submit-hire.png') }}" alt="3:1 Submit to Hire"
-                    class="h-auto max-w-full mt-10 hire">
+                    class="h-auto max-w-[97%] md:max-w-full mt-10 hire">
             </div>
 
         </div>

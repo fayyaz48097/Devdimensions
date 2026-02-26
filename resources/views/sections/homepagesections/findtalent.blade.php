@@ -1,10 +1,10 @@
 @push('styles')
     <style>
         /* ════════════════════════════════════════════
-                                                   PROBLEMS SECTION — mirrors original CSS
-                                                   Using Tailwind where possible, custom for
-                                                   the complex positioned diagram layout
-                                                ════════════════════════════════════════════ */
+                                                       PROBLEMS SECTION — mirrors original CSS
+                                                       Using Tailwind where possible, custom for
+                                                       the complex positioned diagram layout
+                                                    ════════════════════════════════════════════ */
 
         section.problems {
             margin-top: 100px;
@@ -35,7 +35,7 @@
             position: absolute;
             left: 40px;
             top: 56%;
-            font-family: 'Gilroy-SemiBold', sans-serif;
+
             font-size: 48px;
             line-height: normal;
             letter-spacing: -0.96px;

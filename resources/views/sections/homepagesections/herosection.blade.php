@@ -49,7 +49,7 @@
                 <a href="{{ url('/contact-us') }}"
                     class="relative inline-block mt-5 text-white transition-all duration-300 ease-in-out group"
                     style="border: 0;
-          font-family: 'Gilroy-Medium', sans-serif;
+          
           font-size: 14px;
           font-weight: 500;
           text-transform: capitalize;

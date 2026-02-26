@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - @yield('title', 'Home')</title>
+    <title>@yield('title', 'Builds Enterprise Software Solutions') - {{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -12,6 +12,7 @@
     <!-- Custom CSS -->
     {{-- <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet"> --}}
     <link rel="icon" href="{{ asset('assets/images/favicon-150x150.jpeg') }}" sizes="32x32">
+
     <!-- Vite CSS & JS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

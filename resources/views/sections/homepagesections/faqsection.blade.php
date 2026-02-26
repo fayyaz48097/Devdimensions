@@ -27,8 +27,6 @@
         cursor: pointer;
         text-align: left;
         color: #E9E9E9;
-        font-family: 'Gilroy-Regular', sans-serif;
-        font-size: 18px;
         letter-spacing: -0.36px;
         line-height: 1.4;
     }
@@ -53,8 +51,8 @@
         border-top: 1px solid #929292;
         padding-top: 22px;
         color: #F3F3F3;
-        font-family: 'Gilroy-Regular', sans-serif;
-        font-size: 16px;
+
+
         line-height: 1.7;
     }
 
@@ -70,24 +68,22 @@
 
 <section class="w-full py-16 bg-black">
     <div class="px-4 mx-auto" style="max-width:1320px;">
-        <div class="flex flex-wrap -mx-4">
+        <div class="flex flex-col -mx-4 md:flex-row">
 
             {{-- ── LEFT: Heading + subtext ── --}}
             <div class="w-full px-4 mb-10 lg:w-5/12 lg:mb-0">
-                <h2 class="mb-5 leading-tight text-white"
-                    style="font-family:'Gilroy-SemiBold',sans-serif;
-                           font-size: clamp(36px, 3.5vw, 48px);
+                <h2 class="mb-5 text-3xl leading-tight text-white md:text-5xl"
+                    style="
+                           
                            letter-spacing: 0;
-                           font-weight: 600;
+                           font-weight: 500;
                            line-height: 1.1;">
                     Frequently Asked Questions
                 </h2>
-                <p
-                    style="font-family:'Gilroy-Regular',sans-serif;
-                           font-size: 18px;
-                           color: #F3F3F3;
+                <p class="text-sm md:text-xl"
+                    style="
                            line-height: 1.6;
-                           max-width: 320px;">
+                          ">
                     We value long-term partnerships, and we bet you do too.
                 </p>
             </div>
@@ -149,7 +145,8 @@
                     @foreach ($faqs as $i => $faq)
                         <div class="faq-item" id="faq-item-{{ $i }}">
 
-                            <button class="faq-trigger" onclick="toggleFaq({{ $i }})" type="button">
+                            <button class="text-[13px] md:text-xl md:font-bold faq-trigger"
+                                onclick="toggleFaq({{ $i }})" type="button">
                                 <span>{{ $faq['q'] }}</span>
                                 {{-- Chevron SVG --}}
                                 <svg class="faq-chevron" viewBox="0 0 24 24" fill="none"
@@ -159,7 +156,7 @@
                                 </svg>
                             </button>
 
-                            <div class="faq-body" id="faq-body-{{ $i }}">
+                            <div class="faq-body text-[12px] md:text-lg " id="faq-body-{{ $i }}">
                                 <div class="faq-body-inner">
                                     <p>{!! $faq['a'] !!}</p>
                                 </div>

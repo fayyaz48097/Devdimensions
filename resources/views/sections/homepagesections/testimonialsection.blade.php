@@ -4,6 +4,34 @@
 ============================================================ --}}
 
 <style>
+    /* ── Testimonial portrait image sizing ── */
+    .testi-portrait {
+        height: 220px;
+        object-position: center 20% !important;
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+
+        /* Tablet: stack vertically, constrained height so face shows */
+        .testi-portrait {
+            height: 280px;
+            object-position: center 15% !important;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .testi-img-wrap {
+            align-self: stretch;
+        }
+
+        .testi-portrait {
+            height: 100%;
+            min-height: 300px;
+            max-height: 420px;
+            object-position: center 15% !important;
+        }
+    }
+
     /* ── Slider track ── */
     .testi-track {
         display: flex;
@@ -98,8 +126,7 @@
 <section class="w-full pt-10 pb-16 overflow-hidden bg-black">
 
     {{-- Heading --}}
-    <h2 class="text-4xl font-bold text-center text-white mb-14 md:text-5xl"
-        style="font-family:'Gilroy-SemiBold', sans-serif; letter-spacing:-0.5px;">
+    <h2 class="text-4xl font-bold text-center text-white mb-14 md:text-5xl" style="letter-spacing:-0.5px;">
         Don't Take Our Word for it
     </h2>
 
@@ -153,33 +180,33 @@
                     style="width: 820px; max-width: 90vw;">
 
                     {{-- Card --}}
-                    <div class="flex items-center testi-card rounded-2xl"
-                        style="min-height:350px; background: transparent;">
+                    <div class="flex flex-col testi-card rounded-2xl lg:flex-row"
+                        style="background: transparent; min-height: 320px;">
 
-                        {{-- Left: portrait image --}}
-                        <div class="flex-shrink-0" style="width:300px; min-height:330px; position:relative;">
+                        {{-- Top (mobile/tablet) / Left (desktop): portrait image --}}
+                        <div class="testi-img-wrap flex-shrink-0 w-full lg:w-[280px]">
                             <img src="{{ asset('assets/images/' . $t['image']) }}" alt="{{ $t['author'] }}"
-                                class="object-cover w-full h-full ml-4 rounded-2xl"
-                                style="min-height:330px; object-position:top center;">
+                                class="object-cover w-full testi-portrait rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none lg:rounded-r-none"
+                                style="">
                         </div>
 
-                        {{-- Right: text content --}}
-                        <div class="flex flex-col justify-center flex-1 px-8 py-8">
+                        {{-- Bottom (mobile) / Right (desktop): text content --}}
+                        <div class="flex flex-col justify-center flex-1 px-6 py-6 md:px-8 md:py-8">
 
                             {{-- Quote --}}
-                            <p class="mb-5 text-base leading-relaxed"
-                                style="font-family:'Gilroy-Medium',sans-serif;
+                            <p class="mb-4 leading-relaxed"
+                                style="
                                       color:#F8F8F8;
                                       line-height:1.62;
-                                      font-size:16px;">
+                                      font-size:clamp(13px,1.5vw,16px);">
                                 {{ $t['quote'] }}
                             </p>
 
                             {{-- Author --}}
-                            <p class="mb-6"
-                                style="font-family:'Gilroy-RegularItalic',sans-serif;
+                            <p class="mb-4"
+                                style="
                                       color:#C0C0C0;
-                                      font-size:15px;
+                                      font-size:clamp(12px,1.4vw,15px);
                                       line-height:1.5;">
                                 {{ $t['author'] }}<br>
                                 <span>{{ $t['role'] }}</span>
@@ -187,14 +214,14 @@
 
                             {{-- Project label + logo --}}
                             <div>
-                                <p class="mb-2 text-sm"
+                                <p class="mb-2"
                                     style="color:#EDEDED;
-                                          font-family:'Gilroy-Medium',sans-serif;
-                                          font-size:14px;">
+                                         
+                                          font-size:clamp(12px,1.3vw,14px);">
                                     {{ $t['project'] }}
                                 </p>
                                 <img src="{{ asset('assets/images/' . $t['logo']) }}" alt="{{ $t['project'] }}"
-                                    style="height:35px; width:auto; object-fit:contain;">
+                                    style="height:30px; width:auto; object-fit:contain;">
                             </div>
 
                         </div>

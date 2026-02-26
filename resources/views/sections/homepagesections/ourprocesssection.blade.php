@@ -43,7 +43,7 @@
     {{-- ── Title ── --}}
     <div class="relative text-center" style="z-index:2; padding-bottom:10px;">
         <h2 class="m-0 text-white"
-            style="font-family:'Gilroy-SemiBold',sans-serif;
+            style="
                    font-size: clamp(32px, 3.5vw, 52px);
                    letter-spacing: -0.5px;
                    line-height: 1.1;">
@@ -55,10 +55,11 @@
          DESKTOP (md+)
          SVG viewBox 1280×760 — circles sit on the arc
     ═══════════════════════════════════════════════════ --}}
-    <div class="relative hidden mx-auto md:block" style="max-width:1280px; height:760px; z-index:2; overflow:visible;">
+    <div class="relative hidden mx-auto lg:block"
+        style="max-width:1280px; z-index:2; overflow:visible; aspect-ratio: 1280/760;">
 
         {{-- SVG draws arc + teal number circles --}}
-        <svg class="absolute inset-0 w-full" viewBox="0 0 1280 760" preserveAspectRatio="xMidYMid meet"
+        <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1280 760" preserveAspectRatio="xMidYMid meet"
             xmlns="http://www.w3.org/2000/svg" style="overflow:visible; pointer-events:none; height:100%;">
 
             <defs>
@@ -98,7 +99,7 @@
 
         {{-- ── Centre logo watermark ── --}}
         <div class="absolute pointer-events-none"
-            style="left:50%; bottom:150px; transform:translateX(-50%); z-index:1; opacity:0.50;">
+            style="left:50%; bottom:19.74%; transform:translateX(-50%); z-index:1; opacity:0.50;">
             <img src="{{ asset('assets/images/logo-big.svg') }}" alt=""
                 style="width:280px; height:auto; display:block;">
         </div>
@@ -110,7 +111,7 @@
 
         {{-- Step 1 — Clarify Objectives
              Circle (157,345) → box left=42, top=395 --}}
-        <div class="absolute text-center proc-box" style="left:42px; top:395px; width:230px;" data-step="1">
+        <div class="absolute text-center proc-box" style="left:3.28%; top:51.97%; width:17.97%;" data-step="1">
             <div class="proc-icon-wrap">
                 <img src="{{ asset('assets/images/icon-1.svg') }}" alt="Clarify Objectives" class="mx-auto proc-icon">
             </div>
@@ -123,7 +124,7 @@
 
         {{-- Step 2 — Meet Engineers
              Circle (499,137) → box left=384, top=187 --}}
-        <div class="absolute text-center proc-box" style="left:384px; top:187px; width:230px;" data-step="2">
+        <div class="absolute text-center proc-box" style="left:30%; top:24.6%; width:17.97%;" data-step="2">
             <div class="proc-icon-wrap">
                 <img src="{{ asset('assets/images/Group-39218.svg') }}" alt="Meet Engineers"
                     class="mx-auto proc-icon">
@@ -137,7 +138,7 @@
 
         {{-- Step 3 — 7 Day Try Out
              Circle (805,137) → box left=690, top=187 --}}
-        <div class="absolute text-center proc-box" style="left:690px; top:187px; width:230px;" data-step="3">
+        <div class="absolute text-center proc-box" style="left:53.9%; top:24.6%; width:17.97%;" data-step="3">
             <div class="proc-icon-wrap">
                 <img src="{{ asset('assets/images/Group-39216.svg') }}" alt="7 Day Try Out"
                     class="mx-auto proc-icon">
@@ -151,7 +152,7 @@
 
         {{-- Step 4 — Build Your Dream Team
              Circle (1145,345) → box left=1030, top=395 --}}
-        <div class="absolute text-center proc-box" style="left:1030px; top:395px; width:230px;" data-step="4">
+        <div class="absolute text-center proc-box" style="left:80.47%; top:51.97%; width:17.97%;" data-step="4">
             <div class="proc-icon-wrap">
                 <img src="{{ asset('assets/images/startup-1.svg') }}" alt="Build Your Dream Team"
                     class="mx-auto proc-icon">
@@ -168,7 +169,7 @@
     {{-- ═══════════════════════════════════════════════════
          MOBILE (<md) — vertical numbered steps
     ═══════════════════════════════════════════════════ --}}
-    <div class="relative block px-5 py-10 md:hidden" style="z-index:2;">
+    <div class="relative block px-5 py-10 lg:hidden" style="z-index:2;">
 
         {{-- Vertical red connecting line --}}
         <div class="absolute"
@@ -225,7 +226,7 @@
                         transition: background 0.3s ease, transform 0.3s ease;
                         box-shadow: 0 0 0 0 rgba(181,30,23,0);">
                     <span
-                        style="font-family:'Gilroy-SemiBold',sans-serif;
+                        style="
                              font-size:22px; color:#fff; font-weight:600; line-height:1;">
                         {{ $step['num'] }}
                     </span>
@@ -238,7 +239,7 @@
                         style="width:42px; height:42px; object-fit:contain;
                             transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);">
                     <h6
-                        style="font-family:'Gilroy-SemiBold',sans-serif;
+                        style="
                            font-size:17px; color:#fff;
                            letter-spacing:-0.3px; line-height:1.3;
                            margin:0 0 8px 0;">
@@ -246,7 +247,7 @@
                     </h6>
                     <p
                         style="color:#8B8B8B; font-size:14px;
-                          font-family:'Gilroy-Medium',sans-serif;
+                          
                           line-height:1.65; margin:0;">
                         {{ $step['desc'] }}
                     </p>
@@ -274,14 +275,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 14px;
-        height: 56px;
+        margin-bottom: clamp(6px, 1.1vw, 14px);
+        height: clamp(32px, 4.375vw, 56px);
     }
 
     /* ── Icon ── */
     .proc-icon {
-        width: 48px;
-        height: 48px;
+        width: clamp(28px, 3.75vw, 48px);
+        height: clamp(28px, 3.75vw, 48px);
         object-fit: contain;
         display: block;
         transition:
@@ -292,8 +293,7 @@
 
     /* ── Title ── */
     .proc-title {
-        font-family: 'Gilroy-SemiBold', sans-serif;
-        font-size: 18px;
+        font-size: clamp(12px, 1.4vw, 18px);
         color: #fff;
         letter-spacing: -0.36px;
         line-height: 1.3;
@@ -304,8 +304,7 @@
     /* ── Description ── */
     .proc-desc {
         color: #8B8B8B;
-        font-size: 13.5px;
-        font-family: 'Gilroy-Medium', sans-serif;
+        font-size: clamp(10px, 1.05vw, 13.5px);
         line-height: 1.7;
         margin: 0;
         transition: color 0.3s ease;

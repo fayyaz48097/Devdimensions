@@ -3,7 +3,7 @@
 
 @include('components.header')
 
-<body class="font-gilroy antialiased bg-black text-white">
+<body class="antialiased text-white bg-black font-gilroy">
     <div class="min-h-screen">
         <!-- Navigation -->
         @include('components.navigation')

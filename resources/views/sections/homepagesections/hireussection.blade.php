@@ -94,7 +94,7 @@
                 <div style="max-width:510px; width:100%;">
 
                     <h2 class="m-0 mb-5 text-white"
-                        style="font-family:'Gilroy-SemiBold',sans-serif;
+                        style="
                                font-size:clamp(36px,3.5vw,52px);
                                line-height:1.1;
                                letter-spacing:-0.5px;
@@ -103,7 +103,7 @@
                     </h2>
 
                     <p
-                        style="font-family:'Gilroy-Regular',sans-serif;
+                        style="
                               font-size:18px;
                               color:#F3F3F3;
                               line-height:1.6;
@@ -117,7 +117,7 @@
                     <ul style="list-style:none; padding:0; margin:0 0 36px 0;">
                         @foreach (['Hire Individual Resource', 'Hire Multiple Resources', 'Hire Entire Team or Department'] as $item)
                             <li
-                                style="font-family:'Gilroy-Regular',sans-serif;
+                                style="
                                    font-size:18px;
                                    color:#E3E3E3;
                                    padding-left:35px;
@@ -136,23 +136,43 @@
                     </ul>
 
                     {{-- CTA Button --}}
-                    <button class=" btn-theme" data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
-                        style="display:inline-flex; align-items:center; gap:10px;
-                                   background:linear-gradient(90deg,#B51E17 0%,#FC3F37 100%);
-                                   border:0; color:#fff; font-size:16px;
-                                   font-family:'Gilroy-Medium',sans-serif;
-                                   font-weight:500; height:48px; line-height:1;
-                                   padding:0 48px 0 20px; border-radius:5px;
-                                   cursor:pointer; position:relative; min-width:172px;
-                                   text-align:left;">
+                    <a href="{{ url('/contact-us') }}"
+                        class="relative inline-block mt-5 text-white transition-all duration-300 ease-in-out group"
+                        style="border: 0;
+     
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: capitalize;
+          height: 44px;
+          line-height: 44px;
+         width: 228px;
+          padding: 0 46px 0 20px;
+          border-radius: 5px;
+          background: linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%);
+          text-decoration: none;
+          display: inline-block;"
+                        onmouseover="this.style.background='rgba(181, 30, 23, 1)';"
+                        onmouseout="this.style.background='linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%)'">
+
                         Get Free Consultation
-                        <svg style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
-                                    width:26px; height:26px;"
-                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7 17L17 7M17 7H9M17 7v8" stroke="#fff" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                        </svg>
-                    </button>
+
+                        {{-- Icon Wrapper --}}
+                        <span
+                            class="absolute top-1/2 right-2 -translate-y-1/2 flex items-center justify-center w-[30px] h-[30px]">
+
+                            {{-- Diamond Background Shape (Starts at 0, rotates to 45) --}}
+                            <span
+                                class="absolute inset-0 bg-white/20 rounded-[4px] transition-all duration-300 ease-in-out group-hover:rotate-[45deg] group-hover:bg-white/10"></span>
+
+                            {{-- Arrow Icon (Starts horizontal, rotates to top-right corner) --}}
+                            <svg class="relative z-10 transition-all duration-300 ease-in-out -rotate-45 translate-x-0 group-hover:rotate-0 group-hover:translate-x-0"
+                                width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </span>
+                    </a>
 
                 </div>
             </div>
@@ -161,37 +181,34 @@
             <div class="w-full px-4 mt-10 lg:w-1/2 lg:mt-0">
 
                 {{-- Box 1 — Hire Team Member --}}
-                <div class="mb-6 hire-box home-hire"
-                    style="padding:30px;
+                <div class="relative flex items-center gap-4 mb-6 cursor-pointer hire-box home-hire"
+                    style="padding:20px;
                             border-radius:6px;
                             border:1px solid #636363;
                             background:rgba(95,95,95,0.12);
-                            backdrop-filter:blur(21.5px);
-                            padding-left:210px;
-                            display:flex;
-                            align-items:center;
-                            position:relative;
-                            cursor:pointer;">
-                    <img src="{{ asset('assets/images/HE.svg') }}" alt="Hire Team Member"
-                        style="width:130px; position:absolute; left:30px; top:50%;
-                                transform:translateY(-50%); object-fit:contain;">
-                    <div>
+                            backdrop-filter:blur(21.5px);">
+                    {{-- Image: fixed width, never squishes --}}
+                    <div class="shrink-0" style="width:clamp(80px,15vw,130px);">
+                        <img src="{{ asset('assets/images/HE.svg') }}" alt="Hire Team Member"
+                            style="width:100%; height:auto; object-fit:contain; display:block;">
+                    </div>
+                    {{-- Content --}}
+                    <div class="min-w-0">
                         <h4
-                            style="font-family:'Gilroy-Medium',sans-serif;
-                                   font-size:28px; color:#fff;
-                                   margin-bottom:15px; font-weight:500;
-                                   display:flex; align-items:center; gap:10px;">
+                            style="
+                                   font-size:clamp(16px,2.2vw,28px); color:#fff;
+                                   margin-bottom:10px; font-weight:500;
+                                   display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                             Hire Team Member
-                            <svg width="35" height="35" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                                 <path d="M7 17L17 7M17 7H9M17 7v8" stroke="#B51E17" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </h4>
                         <p
-                            style="color:#B7B7B7; font-size:16px; line-height:1.67;
-                                  max-width:380px; width:100%; margin:0;
-                                  font-family:'Gilroy-Regular',sans-serif;">
+                            style="color:#B7B7B7; font-size:clamp(12px,1.4vw,16px); line-height:1.67;
+                                  margin:0; ">
                             Have a team but need to add a key player or two?
                             Draft your MVP's here. Our curated pool of talent
                             seamlessly integrates with your existing team,
@@ -201,37 +218,34 @@
                 </div>
 
                 {{-- Box 2 — Hire Entire Team --}}
-                <div class="hire-box home-hire"
-                    style="padding:30px;
+                <div class="relative flex items-center gap-4 cursor-pointer hire-box home-hire"
+                    style="padding:20px;
                             border-radius:6px;
                             border:1px solid #636363;
                             background:rgba(95,95,95,0.12);
-                            backdrop-filter:blur(21.5px);
-                            padding-left:210px;
-                            display:flex;
-                            align-items:center;
-                            position:relative;
-                            cursor:pointer;">
-                    <img src="{{ asset('assets/images/Group-626683-2.svg') }}" alt="Hire Entire Team"
-                        style="width:130px; position:absolute; left:30px; top:50%;
-                                transform:translateY(-50%); object-fit:contain;">
-                    <div>
+                            backdrop-filter:blur(21.5px);">
+                    {{-- Image: fixed width, never squishes --}}
+                    <div class="shrink-0" style="width:clamp(80px,15vw,130px);">
+                        <img src="{{ asset('assets/images/Group-626683-2.svg') }}" alt="Hire Entire Team"
+                            style="width:100%; height:auto; object-fit:contain; display:block;">
+                    </div>
+                    {{-- Content --}}
+                    <div class="min-w-0">
                         <h4
-                            style="font-family:'Gilroy-Medium',sans-serif;
-                                   font-size:28px; color:#fff;
-                                   margin-bottom:15px; font-weight:500;
-                                   display:flex; align-items:center; gap:10px;">
+                            style="
+                                   font-size:clamp(16px,2.2vw,28px); color:#fff;
+                                   margin-bottom:10px; font-weight:500;
+                                   display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                             Hire Entire Team
-                            <svg width="35" height="35" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
                                 <path d="M7 17L17 7M17 7H9M17 7v8" stroke="#B51E17" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </h4>
                         <p
-                            style="color:#B7B7B7; font-size:16px; line-height:1.67;
-                                  max-width:380px; width:100%; margin:0;
-                                  font-family:'Gilroy-Regular',sans-serif;">
+                            style="color:#B7B7B7; font-size:clamp(12px,1.4vw,16px); line-height:1.67;
+                                  margin:0; ">
                             Have an idea but no team to build it? Stack your
                             team or department with our designers, developers,
                             and project managers to ensure your core focus

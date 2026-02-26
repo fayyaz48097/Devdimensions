@@ -97,7 +97,7 @@
         .marqueeText {
             font-size: 15px;
             color: #E7E7E7;
-            font-family: 'Gilroy-Medium', 'Gilroy', sans-serif;
+
             white-space: nowrap;
         }
 

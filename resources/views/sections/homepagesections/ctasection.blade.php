@@ -1,8 +1,8 @@
 @push('styles')
     <style>
         /* ══════════════════════════════════════
-           CTA SECTION
-        ══════════════════════════════════════ */
+                   CTA SECTION
+                ══════════════════════════════════════ */
 
         section.cta {
             padding: 50px 0;
@@ -71,7 +71,7 @@
 
         /* ── Heading ── */
         .cta-box h4 {
-            font-family: 'Gilroy-SemiBold', sans-serif;
+
             font-size: 32px;
             line-height: 1.3;
             color: #fff;
@@ -107,7 +107,7 @@
             justify-content: space-between;
             width: fit-content;
             border: 1.5px solid #fff;
-            font-family: 'Gilroy-SemiBold', sans-serif;
+
             font-size: 16px;
             text-decoration: none;
             transition: all 0.3s ease-in-out;

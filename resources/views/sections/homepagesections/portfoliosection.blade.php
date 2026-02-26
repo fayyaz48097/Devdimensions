@@ -74,19 +74,19 @@
     $totalMobile = count($projects);
 @endphp
 
-<section class="relative bg-black portfolio-section" style="padding: 64px 0; margin-top: 100px; margin-bottom: 100px;">
+<section class="relative bg-black portfolio-section" style="padding: 64px 0; margin-top: 100px;">
 
     {{-- ── Section Header ── --}}
     <div class="mb-10 port-container">
         {{-- Mobile heading --}}
         <div class="block md:hidden">
-            <h2 class="text-[32px] font-semibold text-white mb-0"
-                style="font-family:'Gilroy-SemiBold',sans-serif; letter-spacing:-0.8px;">Discover What's Possible</h2>
+            <h2 class="text-[32px] font-semibold text-white mb-0" style=" letter-spacing:-0.8px;">Discover What's Possible
+            </h2>
         </div>
         {{-- Desktop heading + CTA --}}
         <div class="items-center justify-between hidden md:flex">
-            <h2 class="text-[48px] font-semibold text-white mb-0"
-                style="font-family:'Gilroy-SemiBold',sans-serif; letter-spacing:-1px;">Discover What's Possible</h2>
+            <h2 class="text-[48px] font-semibold text-white mb-0" style=" letter-spacing:-1px;">Discover What's Possible
+            </h2>
             <a href="{{ url('/case-studies') }}" class="port-cta-btn">
                 View More Work
                 <span class="port-cta-icon-wrap">
@@ -124,15 +124,14 @@
                             {{-- Content --}}
                             <div class="flex flex-col justify-center w-7/12 p-10">
                                 <h4 class="flex flex-wrap items-center gap-3 mb-4 text-white"
-                                    style="font-family:'Gilroy-SemiBold',sans-serif; font-size:32px; line-height:normal;">
+                                    style=" font-size:32px; line-height:normal;">
                                     <a href="{{ url('/project/' . $project['slug']) }}" class="text-white no-underline"
                                         style="transition:color 0.3s;">{{ $project['title'] }}</a>
                                     @foreach ($project['cats'] as $cat)
                                         <span class="cat-badge">{{ $cat }}</span>
                                     @endforeach
                                 </h4>
-                                <p class="mb-6"
-                                    style="color:#A0A0A0; font-family:'Gilroy-RegularItalic',sans-serif; font-size:16px; line-height:1.6;">
+                                <p class="mb-6" style="color:#A0A0A0;  font-size:16px; line-height:1.6;">
                                     {{ $project['desc'] }}
                                 </p>
                                 <div class="tools-row">
@@ -198,8 +197,7 @@
                                 {{-- Title + arrow row --}}
                                 <div>
                                     <div class="flex items-start justify-between gap-2 mb-2">
-                                        <h4 class="mb-0 leading-tight text-white"
-                                            style="font-family:'Gilroy-SemiBold',sans-serif; font-size:18px;">
+                                        <h4 class="mb-0 leading-tight text-white" style=" font-size:18px;">
                                             <a href="{{ url('/project/' . $project['slug']) }}"
                                                 class="text-white no-underline"
                                                 style="transition:color 0.3s;">{{ $project['title'] }}</a>
@@ -228,7 +226,7 @@
 
                                     {{-- Description clipped --}}
                                     <p class="mb-3"
-                                        style="color:#A0A0A0; font-family:'Gilroy-RegularItalic',sans-serif; font-size:12px; line-height:1.55; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
+                                        style="color:#A0A0A0;  font-size:12px; line-height:1.55; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;">
                                         {{ $project['desc'] }}
                                     </p>
                                 </div>
@@ -289,7 +287,7 @@
         position: relative;
         display: inline-block;
         color: #fff;
-        font-family: 'Gilroy-Medium', sans-serif;
+
         font-size: 14px;
         font-weight: 500;
         height: 44px;
@@ -365,7 +363,7 @@
     }
 
     .tools-label {
-        font-family: 'Gilroy-Medium', sans-serif;
+
         font-size: 16px;
         color: #EDEDED;
     }
@@ -471,12 +469,6 @@
         background: linear-gradient(90deg, rgba(181, 30, 23, 1) 0%, rgba(252, 63, 55, 1) 100%);
     }
 
-    .work-card:hover .card-arrow-bg,
-    .mob-card:hover .card-arrow-bg {
-        transform: rotate(45deg);
-        background: rgba(255, 255, 255, 0.10);
-        border-radius: 4px;
-    }
 
     .work-card:hover .card-arrow-svg,
     .mob-card:hover .card-arrow-svg {

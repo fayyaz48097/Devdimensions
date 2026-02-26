@@ -31,7 +31,7 @@
         max-width: 340px;
         width: 100%;
         color: #BBB;
-        font-family: 'Gilroy-Regular', sans-serif;
+
         font-size: 16px;
         line-height: 1.5;
         margin-top: 52px;
@@ -53,7 +53,7 @@
     }
 
     .social li a {
-        font-family: 'Gilroy-Medium', sans-serif;
+
         font-size: 14px;
         line-height: 20px;
         color: #fff;
@@ -90,7 +90,7 @@
 
     .office-loc h6 {
         margin: 0;
-        font-family: 'Gilroy-SemiBold', sans-serif;
+
         font-size: 20px;
         color: #fff;
         letter-spacing: 0;
@@ -128,7 +128,7 @@
     }
 
     .contact-menu li a {
-        font-family: 'Gilroy-Regular', sans-serif;
+
         font-size: 14px;
         line-height: 21px;
         color: #fff;
@@ -145,7 +145,7 @@
     .copyright {
         color: #5B5B5B;
         font-size: 12px;
-        font-family: 'Gilroy-Regular', sans-serif;
+
         text-align: center;
         margin-top: 41px;
         display: flex;
@@ -193,7 +193,7 @@
 ══════════════════════════════════════════════════════ --}}
 <footer>
     <div
-        class="w-full px-3 mx-auto
+        class="w-full px-[1rem] mx-auto
             sm:max-w-[540px]
             md:max-w-[720px]
             lg:max-w-[960px]
@@ -225,7 +225,8 @@
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                                 </svg>
-                                <span>Facebook</span>
+
+                                <span class="hidden sm:block">Facebook</span>
                             </a>
                         </li>
                         <li>
@@ -237,7 +238,8 @@
                                     <rect x="2" y="9" width="4" height="12" />
                                     <circle cx="4" cy="4" r="2" />
                                 </svg>
-                                <span>LinkedIn</span>
+
+                                <span class="hidden sm:block">LinkedIn</span>
                             </a>
                         </li>
                         <li>
@@ -250,7 +252,7 @@
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                                 </svg>
-                                <span>Instagram</span>
+                                <span class="hidden sm:block">Instagram</span>
                             </a>
                         </li>
                     </ul>
@@ -319,8 +321,8 @@
 
                         {{-- Phone + Email --}}
                         <li>
-                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"
-                                stroke-linecap="round" stroke-linejoin="round">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
                                 <line x1="12" y1="18" x2="12.01" y2="18" />
                             </svg>

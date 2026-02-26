@@ -7,13 +7,13 @@
     <div class="px-6 mx-auto max-w-7xl">
 
         {{-- Heading --}}
-        <h2 class="text-5xl font-semibold tracking-tight text-center text-white mb-14"
-            style="font-family:'Gilroy-SemiBold', sans-serif; letter-spacing:-0.5px;">
+        <h2 class="text-3xl font-semibold tracking-tight text-center text-white md:text-5xl mb-14"
+            style=" letter-spacing:-0.5px;">
             Our Partners
         </h2>
 
         {{-- Logo row --}}
-        <div class="grid items-center grid-cols-2 gap-[5.25rem] gap-y-10 md:grid-cols-3 lg:grid-cols-6">
+        <div class="grid items-center grid-cols-3 gap-[3rem] md:gap-[5.25rem] gap-y-10 md:grid-cols-3 lg:grid-cols-6">
 
             @php
                 $partners = [
