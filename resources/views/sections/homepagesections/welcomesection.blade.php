@@ -239,11 +239,11 @@
                     </p>
 
                     {{-- ── Vertical Text Slider List ── --}}
-                    <ul class="we-needs mt-[44px] mb-0 p-0 ">
+                    <ul class="we-needs text-lg md:text-2xl mt-[44px] mb-0 p-0 ">
 
                         {{-- Line 1: I need a [role] --}}
                         <li>
-                            <span class=" shrink-0">I need a</span>
+                            <span class="shrink-0">I need a</span>
                             <div class="slide-hold">
                                 <div class="slide-track tex_slide1">
                                     <span> Full Stack Developer</span>

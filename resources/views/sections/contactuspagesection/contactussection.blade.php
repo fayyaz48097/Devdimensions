@@ -1,6 +1,6 @@
 {{-- ============================================================
-     Contact Us Section — 3-Step Form
-     Pixel-perfect match to original WordPress design
+     Contact Us Section — 3-Step Form with AJAX Submission
+     SAVE AS: resources/views/sections/contactuspagesection/contactussection.blade.php
 ============================================================ --}}
 
 <style>
@@ -13,7 +13,6 @@
         margin-bottom: 0;
     }
 
-    /* the full grey track */
     .dd-probar-track {
         position: absolute;
         top: 21px;
@@ -24,7 +23,6 @@
         z-index: 0;
     }
 
-    /* red filled portion */
     .dd-probar-fill {
         position: absolute;
         top: 21px;
@@ -35,7 +33,6 @@
         transition: width 0.4s ease;
     }
 
-    /* each point col */
     .dd-probar .dd-point {
         position: relative;
         z-index: 2;
@@ -44,24 +41,20 @@
     }
 
     .dd-probar .dd-point:nth-child(3) {
-        /* 01 — left */
         align-items: flex-start;
         flex: 0 0 auto;
     }
 
     .dd-probar .dd-point:nth-child(4) {
-        /* 02 — center */
         flex: 1;
         align-items: center;
     }
 
     .dd-probar .dd-point:nth-child(5) {
-        /* 03 — right */
         flex: 0 0 auto;
         align-items: flex-end;
     }
 
-    /* the circle */
     .dd-point .dd-circle {
         width: 42px;
         height: 42px;
@@ -98,7 +91,6 @@
         font-family: 'Gilroy-SemiBold', sans-serif;
     }
 
-    /* 01 label left, 02 label center, 03 label right */
     .dd-probar .dd-point:nth-child(3) .dd-label {
         text-align: left;
     }
@@ -130,7 +122,7 @@
         padding: 40px 48px 12px;
     }
 
-    /* ─── Form card bottom (button row) ─── */
+    /* ─── Form card bottom ─── */
     .dd-card-bot {
         background: rgba(22, 14, 14, 0.72);
         border: 1px solid rgba(255, 255, 255, 0.06);
@@ -330,6 +322,13 @@
         background: #B51E17;
     }
 
+    .dd-btn-next:disabled,
+    .dd-btn-sub:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
     .dd-btn-back {
         background: rgba(255, 255, 255, 0.06);
         border: 1px solid rgba(255, 255, 255, 0.1);
@@ -344,6 +343,52 @@
         width: 22px;
         height: 22px;
         flex-shrink: 0;
+    }
+
+    /* Spinner inside submit btn */
+    .dd-spinner {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        animation: ddSpin 0.75s linear infinite;
+    }
+
+    @keyframes ddSpin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* ─── Error inline ─── */
+    .dd-field-err {
+        display: none;
+        color: #FC3F37;
+        font-size: 12px;
+        font-family: 'Gilroy-Regular', sans-serif;
+        margin-top: 6px;
+    }
+
+    .dd-field-err.visible {
+        display: block;
+    }
+
+    /* ─── Server error banner ─── */
+    .dd-server-err {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+        background: rgba(252, 63, 55, 0.07);
+        border: 1px solid rgba(252, 63, 55, 0.22);
+        border-radius: 10px;
+        color: #FC3F37;
+        font-size: 14px;
+        font-family: 'Gilroy-Regular', sans-serif;
+    }
+
+    .dd-server-err.visible {
+        display: flex;
     }
 
     /* ─── Service cards (step 2) ─── */
@@ -476,7 +521,7 @@
 {{-- ══ SECTION ══ --}}
 <section id="dd-section" class="relative w-full overflow-hidden" style="padding: 185px 0 100px;">
 
-    {{-- Background — identical to herosection.blade.php --}}
+    {{-- Background --}}
     <img src="{{ asset('assets/images/home-hero-1.png') }}" alt=""
         class="absolute inset-0 object-cover object-center w-full" style="z-index: -1;">
 
@@ -488,31 +533,36 @@
         {{-- Heading --}}
         <div id="dd-intro">
             <h1 class="text-center md:text-[58px] text-4xl"
-                style="
-                   color:#E7E7E7;  font-weight:600;
-                   letter-spacing:-1.16px; line-height:1.1; margin-bottom:20px;">
+                style="color:#E7E7E7; font-weight:600; letter-spacing:-1.16px; line-height:1.1; margin-bottom:20px;">
                 Let's <span class="text-[#D62D26]">Collaborate</span>. We're All Ears!
             </h1>
-
-            {{-- Subtitle --}}
             <p class="text-center grey-DB f-16" style="max-width:820px; margin:0 auto; line-height:1.65;">
                 Unlock the gateway to collaboration by sharing your personal details, project aspirations,
                 and desired timelines. Let our connection become the bridge that brings your vision to life,
                 as we navigate together towards a shared destination.
             </p>
-        </div>{{-- /#dd-intro --}}
+        </div>
 
         {{-- ══ FORM ══ --}}
-        <div id="dd-form" class="mx-auto mt-8 dd-form md:mt-40" style="max-width:1160px; ">
+        <div id="dd-form" class="mx-auto mt-8 dd-form md:mt-40" style="max-width:1160px;">
 
-            {{-- ──────── STEP 1 ──────── --}}
+            {{-- ─── Server error banner (shared across steps) ─── --}}
+            <div class="dd-server-err" id="dd-server-err">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round" style="flex-shrink:0;">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span id="dd-server-err-txt"></span>
+            </div>
+
+            {{-- ──────── STEP 1 — Your Information ──────── --}}
             <div class="dd-step dd-active" id="dd-s1">
 
-                {{-- Progress bar --}}
                 <div class="dd-probar">
                     <div class="dd-probar-track"></div>
-                    <div class="dd-probar-fill" style="width: 0%;"></div>
-
+                    <div class="dd-probar-fill" style="width:0%;"></div>
                     <div class="dd-point active">
                         <div class="dd-circle">01</div>
                         <div class="dd-label">Your<br>Information</div>
@@ -527,24 +577,30 @@
                     </div>
                 </div>
 
-                {{-- Form card --}}
                 <div class="dd-card-top">
                     <div class="flex flex-wrap" style="margin:0 -16px;">
+
                         {{-- Full Name --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
                             <label>Full Name</label>
-                            <input type="text" id="dd-name" placeholder="">
+                            <input type="text" id="dd-name" placeholder="John Doe" autocomplete="name">
+                            <span class="dd-field-err" id="err-name">Please enter your full name.</span>
                         </div>
+
                         {{-- Company --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
-                            <label>Company/Organization</label>
-                            <input type="text" id="dd-company" placeholder="">
+                            <label>Company / Organization</label>
+                            <input type="text" id="dd-company" placeholder="Acme Inc." autocomplete="organization">
+                            <span class="dd-field-err" id="err-company">Please enter your company name.</span>
                         </div>
+
                         {{-- Email --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
                             <label>Your Email</label>
-                            <input type="email" id="dd-email" placeholder="">
+                            <input type="email" id="dd-email" placeholder="you@company.com" autocomplete="email">
+                            <span class="dd-field-err" id="err-email">Please enter a valid email address.</span>
                         </div>
+
                         {{-- Phone --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
                             <label>Contact Number</label>
@@ -553,7 +609,6 @@
                                     <img src="https://flagcdn.com/w40/us.png" id="dd-flag-img" alt="US">
                                     <span class="dd-dial" id="dd-dial-txt">+1</span>
                                     <span class="dd-caret">▾</span>
-                                    {{-- Dropdown --}}
                                     <div class="dd-country-dd" id="dd-country-dd">
                                         @php
                                             $ddCountries = [
@@ -593,26 +648,29 @@
                                 <input type="hidden" id="dd-dial-val" value="+1">
                             </div>
                         </div>
+
                     </div>
                 </div>
+
                 <div class="dd-card-bot">
                     <button class="dd-btn-next" onclick="ddNext(2)">
                         Next
-                        <svg class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
+                        <svg class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
                             <path d="M12 5l7 7-7 7" />
                         </svg>
                     </button>
                 </div>
+
             </div>{{-- /s1 --}}
 
-            {{-- ──────── STEP 2 ──────── --}}
+            {{-- ──────── STEP 2 — Project Information ──────── --}}
             <div class="dd-step" id="dd-s2">
 
                 <div class="dd-probar">
                     <div class="dd-probar-track"></div>
-                    <div class="dd-probar-fill" style="width: 50%;"></div>
+                    <div class="dd-probar-fill" style="width:50%;"></div>
                     <div class="dd-point active">
                         <div class="dd-circle">01</div>
                         <div class="dd-label">Your<br>Information</div>
@@ -630,7 +688,7 @@
                 <div class="dd-card-top">
                     <div class="dd-fg">
                         <label style="font-size:18px;">Are there any technologies you want to specify?</label>
-                        <input type="hidden" id="dd-services" value="UX/UI Design">
+                        <input type="hidden" id="dd-services" value="">
                         <div class="dd-svc-grid">
                             @php
                                 $ddSvcs = [
@@ -656,6 +714,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="dd-card-bot spaced">
                     <button class="dd-btn-back" onclick="ddBack(1)">
                         <svg class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
@@ -674,14 +733,15 @@
                         </svg>
                     </button>
                 </div>
+
             </div>{{-- /s2 --}}
 
-            {{-- ──────── STEP 3 ──────── --}}
+            {{-- ──────── STEP 3 — Let's Finalize ──────── --}}
             <div class="dd-step" id="dd-s3">
 
                 <div class="dd-probar">
                     <div class="dd-probar-track"></div>
-                    <div class="dd-probar-fill" style="width: 100%;"></div>
+                    <div class="dd-probar-fill" style="width:100%;"></div>
                     <div class="dd-point active">
                         <div class="dd-circle">01</div>
                         <div class="dd-label">Your<br>Information</div>
@@ -698,6 +758,8 @@
 
                 <div class="dd-card-top">
                     <div class="flex flex-wrap" style="margin:0 -16px;">
+
+                        {{-- Engineers --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
                             <label>How many Engineers do you want?</label>
                             <div class="dd-pills">
@@ -710,6 +772,8 @@
                                 @endforeach
                             </div>
                         </div>
+
+                        {{-- Type of hire --}}
                         <div class="w-full md:w-1/2 dd-fg" style="padding:0 16px;">
                             <label>What type of Hire do you need?</label>
                             <div class="dd-pills">
@@ -722,6 +786,8 @@
                                 @endforeach
                             </div>
                         </div>
+
+                        {{-- Timeline --}}
                         <div class="w-full dd-fg" style="padding:0 16px;">
                             <label>How Quickly do you want to hire?</label>
                             <div class="dd-pills">
@@ -734,12 +800,17 @@
                                 @endforeach
                             </div>
                         </div>
+
+                        {{-- Message --}}
                         <div class="w-full dd-fg" style="padding:0 16px;">
                             <label>Anything else you want to tell us</label>
-                            <textarea id="dd-msg" rows="5"></textarea>
+                            <textarea id="dd-msg" rows="5" placeholder="Tell us more about your project…"></textarea>
+                            <span class="dd-field-err" id="err-msg">Please add a brief message.</span>
                         </div>
+
                     </div>
                 </div>
+
                 <div class="dd-card-bot spaced">
                     <button class="dd-btn-back" onclick="ddBack(2)">
                         <svg class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
@@ -749,25 +820,30 @@
                         </svg>
                         Back
                     </button>
-                    <button class="dd-btn-sub" onclick="ddSubmit()">
-                        Submit
-                        <svg class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                    <button class="dd-btn-sub" id="dd-submit-btn" onclick="ddSubmit()">
+                        <span id="dd-btn-label">Submit</span>
+                        <svg id="dd-btn-icon" class="dd-btn-icon" viewBox="0 0 24 24" fill="none" stroke="#fff"
                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M5 12h14" />
                             <path d="M12 5l7 7-7 7" />
                         </svg>
+                        <svg id="dd-btn-spinner" class="dd-spinner" style="display:none;" viewBox="0 0 24 24"
+                            fill="none" stroke="white" stroke-width="2.5">
+                            <circle cx="12" cy="12" r="10" stroke-opacity="0.25" />
+                            <path d="M12 2 a10 10 0 0 1 10 10" stroke-opacity="1" />
+                        </svg>
                     </button>
                 </div>
+
             </div>{{-- /s3 --}}
 
-            {{-- Success --}}
+            {{-- ─── Success screen ─── --}}
             <div class="dd-success" id="dd-success">
                 <div class="dd-tick">✓</div>
-                <h3 style=" color:#E7E7E7;
-                           font-size:34px; margin-bottom:14px;">
+                <h3 style="color:#E7E7E7; font-size:34px; margin-bottom:14px;">
                     Thank you for reaching out!
                 </h3>
-                <p style="color:#DBDBDB; font-size:18px;">
+                <p id="dd-success-msg" style="color:#DBDBDB; font-size:18px;">
                     We've received your message and will be in touch within 24 hours.
                 </p>
             </div>
@@ -779,15 +855,57 @@
 <script>
     (function() {
 
-        /* ── show step ── */
+        /* ── helpers ── */
+        function isEmail(v) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        }
+
+        function showErr(id, msg) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            if (msg) el.textContent = msg;
+            el.classList.add('visible');
+        }
+
+        function hideErr(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.remove('visible');
+        }
+
+        function clearInput(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.remove('dd-err');
+        }
+
+        function setInputErr(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.add('dd-err');
+        }
+
+        function showServerErr(msg) {
+            var wrap = document.getElementById('dd-server-err');
+            var txt = document.getElementById('dd-server-err-txt');
+            if (txt) txt.textContent = msg;
+            if (wrap) wrap.classList.add('visible');
+        }
+
+        function hideServerErr() {
+            var wrap = document.getElementById('dd-server-err');
+            if (wrap) wrap.classList.remove('visible');
+        }
+
+        /* ── step display ── */
         function ddShow(n) {
-            document.querySelectorAll('.dd-step').forEach(el => el.classList.remove('dd-active'));
-            const t = document.getElementById('dd-s' + n);
+            document.querySelectorAll('.dd-step').forEach(function(el) {
+                el.classList.remove('dd-active');
+            });
+            var t = document.getElementById('dd-s' + n);
             if (t) {
                 t.classList.add('dd-active');
-                setTimeout(() => {
-                    const section = document.getElementById('dd-section');
-                    const top = section.getBoundingClientRect().top + window.pageYOffset;
+                hideServerErr();
+                setTimeout(function() {
+                    var section = document.getElementById('dd-section');
+                    var top = section.getBoundingClientRect().top + window.pageYOffset;
                     window.scrollTo({
                         top: top,
                         behavior: 'smooth'
@@ -798,27 +916,47 @@
 
         /* ── validate step 1 ── */
         function ddValidate1() {
-            let ok = true;
-            ['dd-name', 'dd-company', 'dd-email'].forEach(id => {
-                const el = document.getElementById(id);
-                if (!el || !el.value.trim()) {
-                    el && el.classList.add('dd-err');
-                    ok = false;
-                } else el.classList.remove('dd-err');
-            });
-            const em = document.getElementById('dd-email');
-            if (em && em.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.value)) {
-                em.classList.add('dd-err');
+            var ok = true;
+            var name = document.getElementById('dd-name');
+            var comp = document.getElementById('dd-company');
+            var email = document.getElementById('dd-email');
+
+            if (!name || !name.value.trim() || name.value.trim().length < 2) {
+                setInputErr('dd-name');
+                showErr('err-name');
                 ok = false;
+            } else {
+                clearInput('dd-name');
+                hideErr('err-name');
             }
+
+            if (!comp || !comp.value.trim()) {
+                setInputErr('dd-company');
+                showErr('err-company');
+                ok = false;
+            } else {
+                clearInput('dd-company');
+                hideErr('err-company');
+            }
+
+            if (!email || !isEmail(email.value.trim())) {
+                setInputErr('dd-email');
+                showErr('err-email');
+                ok = false;
+            } else {
+                clearInput('dd-email');
+                hideErr('err-email');
+            }
+
             return ok;
         }
 
-        /* ── public funcs ── */
+        /* ── public nav funcs ── */
         window.ddNext = function(n) {
             if (n === 2 && !ddValidate1()) return;
             ddShow(n);
         };
+
         window.ddBack = function(n) {
             ddShow(n);
         };
@@ -826,84 +964,189 @@
         /* ── service multi-select ── */
         window.ddToggleSvc = function(el) {
             el.classList.toggle('on');
-            const vals = [...document.querySelectorAll('.dd-svc.on')].map(s => s.dataset.val);
+            var vals = Array.from(document.querySelectorAll('.dd-svc.on')).map(function(s) {
+                return s.dataset.val;
+            });
             document.getElementById('dd-services').value = vals.join(', ');
         };
 
-        /* ── remove err on type ── */
-        document.querySelectorAll('.dd-form input, .dd-form textarea').forEach(el => {
-            el.addEventListener('input', () => el.classList.remove('dd-err'));
+        /* ── clear input errors on type ── */
+        document.querySelectorAll('.dd-form input, .dd-form textarea').forEach(function(el) {
+            el.addEventListener('input', function() {
+                el.classList.remove('dd-err');
+                hideServerErr();
+            });
         });
 
         /* ── flag / dial dropdown ── */
-        const flagBtn = document.getElementById('dd-flag-btn');
-        const countryDd = document.getElementById('dd-country-dd');
+        var flagBtn = document.getElementById('dd-flag-btn');
+        var countryDd = document.getElementById('dd-country-dd');
+
         if (flagBtn) {
-            flagBtn.addEventListener('click', e => {
+            flagBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 countryDd.classList.toggle('open');
             });
         }
-        document.querySelectorAll('.dd-copt').forEach(opt => {
-            opt.addEventListener('click', e => {
+
+        document.querySelectorAll('.dd-copt').forEach(function(opt) {
+            opt.addEventListener('click', function(e) {
                 e.stopPropagation();
                 document.getElementById('dd-flag-img').src =
-                    `https://flagcdn.com/w40/${opt.dataset.code}.png`;
+                    'https://flagcdn.com/w40/' + opt.dataset.code + '.png';
                 document.getElementById('dd-dial-txt').textContent = opt.dataset.dial;
                 document.getElementById('dd-dial-val').value = opt.dataset.dial;
                 countryDd.classList.remove('open');
             });
         });
-        document.addEventListener('click', () => {
+
+        document.addEventListener('click', function() {
             if (countryDd) countryDd.classList.remove('open');
         });
 
         /* ── phone focus styling ── */
-        const phInput = document.getElementById('dd-phone');
-        const phWrap = document.getElementById('dd-phone-wrap');
+        var phInput = document.getElementById('dd-phone');
+        var phWrap = document.getElementById('dd-phone-wrap');
         if (phInput && phWrap) {
-            phInput.addEventListener('focus', () => phWrap.classList.add('focus'));
-            phInput.addEventListener('blur', () => phWrap.classList.remove('focus'));
+            phInput.addEventListener('focus', function() {
+                phWrap.classList.add('focus');
+            });
+            phInput.addEventListener('blur', function() {
+                phWrap.classList.remove('focus');
+            });
         }
 
-        /* ── submit (template only) ── */
+        /* ── SUBMIT — AJAX ── */
         window.ddSubmit = function() {
-            const msg = document.getElementById('dd-msg');
-            if (msg && !msg.value.trim()) {
-                msg.classList.add('dd-err');
+            /* validate message */
+            var msg = document.getElementById('dd-msg');
+            if (!msg || !msg.value.trim()) {
+                setInputErr('dd-msg');
+                showErr('err-msg');
                 return;
             }
-            document.querySelectorAll('.dd-step').forEach(el => el.style.display = 'none');
-            // Hide intro heading/subtitle
-            const introEl = document.getElementById('dd-intro');
+            hideErr('err-msg');
+            clearInput('dd-msg');
+
+            /* collect all values */
+            var full_name = (document.getElementById('dd-name') || {}).value || '';
+            var company = (document.getElementById('dd-company') || {}).value || '';
+            var email = (document.getElementById('dd-email') || {}).value || '';
+            var dial = (document.getElementById('dd-dial-val') || {}).value || '';
+            var phone = (document.getElementById('dd-phone') || {}).value || '';
+            var servicesRaw = (document.getElementById('dd-services') || {}).value || '';
+            var description = msg.value.trim();
+
+            var engEl = document.querySelector('input[name="dd-eng"]:checked');
+            var hireEl = document.querySelector('input[name="dd-hire"]:checked');
+            var timeEl = document.querySelector('input[name="dd-time"]:checked');
+
+            var no_of_engineers = engEl ? engEl.value : '';
+            var type_of_hire = hireEl ? hireEl.value : '';
+            var quickly_hire = timeEl ? timeEl.value : '';
+
+            /* technologies array */
+            var technologies = servicesRaw ?
+                servicesRaw.split(',').map(function(s) {
+                    return s.trim();
+                }).filter(Boolean) :
+                [];
+
+            /* loading state */
+            var submitBtn = document.getElementById('dd-submit-btn');
+            var btnLabel = document.getElementById('dd-btn-label');
+            var btnIcon = document.getElementById('dd-btn-icon');
+            var btnSpinner = document.getElementById('dd-btn-spinner');
+
+            submitBtn.disabled = true;
+            btnLabel.textContent = 'Sending…';
+            if (btnIcon) btnIcon.style.display = 'none';
+            if (btnSpinner) btnSpinner.style.display = '';
+            hideServerErr();
+
+            var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+
+            fetch('{{ route('contact.store') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfMeta ? csrfMeta.content : '',
+                    },
+                    body: JSON.stringify({
+                        full_name: full_name.trim(),
+                        email: email.trim(),
+                        company: company.trim(),
+                        technologies: technologies,
+                        no_of_engineers: no_of_engineers || null,
+                        type_of_hire: type_of_hire,
+                        quickly_hire: quickly_hire,
+                        description: description,
+                    }),
+                })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(data) {
+                    /* reset button state */
+                    submitBtn.disabled = false;
+                    btnLabel.textContent = 'Submit';
+                    if (btnIcon) btnIcon.style.display = '';
+                    if (btnSpinner) btnSpinner.style.display = 'none';
+
+                    if (data.success) {
+                        ddShowSuccess(data.message);
+                    } else {
+                        showServerErr(data.message || 'Something went wrong. Please try again.');
+                    }
+                })
+                .catch(function() {
+                    submitBtn.disabled = false;
+                    btnLabel.textContent = 'Submit';
+                    if (btnIcon) btnIcon.style.display = '';
+                    if (btnSpinner) btnSpinner.style.display = 'none';
+                    showServerErr('Network error. Please check your connection and try again.');
+                });
+        };
+
+        function ddShowSuccess(message) {
+            /* hide all steps */
+            document.querySelectorAll('.dd-step').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.getElementById('dd-server-err').classList.remove('visible');
+
+            /* hide intro heading */
+            var introEl = document.getElementById('dd-intro');
             if (introEl) introEl.style.display = 'none';
-            // Make the section fill the viewport and center its content
-            const section = document.getElementById('dd-section');
+
+            /* stretch section */
+            var section = document.getElementById('dd-section');
             if (section) {
                 section.style.padding = '0';
                 section.style.minHeight = '100vh';
                 section.style.display = 'flex';
                 section.style.alignItems = 'center';
             }
-            // Show success
-            const successEl = document.getElementById('dd-success');
+
+            /* show success */
+            var successEl = document.getElementById('dd-success');
+            var successMsg = document.getElementById('dd-success-msg');
+            if (successMsg && message) successMsg.textContent = message;
             successEl.style.display = 'flex';
             successEl.style.margin = '0';
-            // Scroll section into view
-            setTimeout(() => {
-                section ? section.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    }) :
-                    successEl.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-            }, 60);
-        };
 
-        /* ── init service hidden val ── */
-        const firstSvc = document.querySelector('.dd-svc.on');
+            /* scroll into view */
+            setTimeout(function() {
+                (section || successEl).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 60);
+        }
+
+        /* ── init services hidden value from pre-selected card ── */
+        var firstSvc = document.querySelector('.dd-svc.on');
         if (firstSvc) document.getElementById('dd-services').value = firstSvc.dataset.val;
 
     })();

@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
+use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +29,9 @@ Route::get('/contact-us', fn() => view('pages.contactus.contactus'))->name('cont
 // ── Public: Consultation form submission (modal AJAX) ──
 Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
 
+// ── Public: Contact-us form submission (AJAX) ──
+Route::post('/contact-us', [ContactUsController::class, 'store'])->name('contact.store');
+
 
 // ── Admin Auth (guest — redirects if already logged in) ──
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -36,15 +41,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
 // ── Admin Panel (protected) ──
-// All views live inside: resources/views/pages/admin/
 Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::class)->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard — live data from DashboardController
+    // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pages — views/pages/admin/pages/
+    // Pages
     Route::prefix('pages')->name('pages.')->group(function () {
         Route::get('/home',         fn() => view('pages.admin.pages.home'))->name('home');
         Route::get('/about',        fn() => view('pages.admin.pages.about'))->name('about');
@@ -52,49 +56,51 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
         Route::get('/contact',      fn() => view('pages.admin.pages.contact'))->name('contact');
     });
 
-    // Case Studies — views/pages/admin/casestudies/
+    // Case Studies
     Route::prefix('case-studies')->name('casestudies.')->group(function () {
         Route::get('/',           fn() => view('pages.admin.casestudies.index'))->name('index');
         Route::get('/create',     fn() => view('pages.admin.casestudies.create'))->name('create');
         Route::get('/categories', fn() => view('pages.admin.casestudies.categories'))->name('categories');
     });
 
-    // Testimonials — views/pages/admin/testimonials/
+    // Testimonials
     Route::prefix('testimonials')->name('testimonials.')->group(function () {
         Route::get('/',       fn() => view('pages.admin.testimonials.index'))->name('index');
         Route::get('/create', fn() => view('pages.admin.testimonials.create'))->name('create');
     });
 
-    // Partners — views/pages/admin/partners/
+    // Partners
     Route::prefix('partners')->name('partners.')->group(function () {
         Route::get('/', fn() => view('pages.admin.partners.index'))->name('index');
     });
 
-    // Consultations — views/pages/admin/consultations/
+    // Consultations
     Route::prefix('consultations')->name('consultations.')->group(function () {
         Route::get('/',                        [AdminConsultationController::class, 'index'])->name('index');
         Route::get('/{consultation}',          [AdminConsultationController::class, 'show'])->name('show');
         Route::patch('/{consultation}/status', [AdminConsultationController::class, 'updateStatus'])->name('updateStatus');
     });
 
-    // Contacts — views/pages/admin/contacts/
+    // Contact-us submissions
     Route::prefix('contacts')->name('contacts.')->group(function () {
-        Route::get('/', fn() => view('pages.admin.contacts.index'))->name('index');
+        Route::get('/',                [AdminContactUsController::class, 'index'])->name('index');
+        Route::get('/{contact}',       [AdminContactUsController::class, 'show'])->name('show');
+        Route::patch('/{contact}/status', [AdminContactUsController::class, 'updateStatus'])->name('updateStatus');
     });
 
-    // Settings — views/pages/admin/settings/
+    // Settings
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/general', fn() => view('pages.admin.settings.general'))->name('general');
         Route::get('/seo',     fn() => view('pages.admin.settings.seo'))->name('seo');
         Route::get('/social',  fn() => view('pages.admin.settings.social'))->name('social');
     });
 
-    // Users — views/pages/admin/users/
+    // Users
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/',       fn() => view('pages.admin.users.index'))->name('index');
         Route::get('/create', fn() => view('pages.admin.users.create'))->name('create');
     });
 
-    // Profile — views/pages/admin/profile.blade.php
+    // Profile
     Route::get('/profile', fn() => view('pages.admin.profile'))->name('profile');
 });

@@ -384,6 +384,9 @@
                 </svg>
             </span>
             Contact Forms
+            @if (($sidebarContactCount ?? 0) > 0)
+                <span class="nav-badge">{{ $sidebarContactCount }}</span>
+            @endif
         </a>
 
         {{-- ── SETTINGS ── --}}

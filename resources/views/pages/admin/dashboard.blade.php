@@ -57,6 +57,30 @@
             color: #fff;
         }
 
+        /* ── Section divider label ── */
+        .section-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 16px;
+        }
+
+        .section-label span {
+            font-size: 11px;
+            font-weight: 600;
+            color: #2E2E2E;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            white-space: nowrap;
+        }
+
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
         /* ── Stats 4-col ── */
         .stats-grid {
             display: grid;
@@ -351,6 +375,18 @@
             background: #555;
         }
 
+        /* ── Tech tag ── */
+        .tech-tag {
+            display: inline-block;
+            background: rgba(252, 63, 55, 0.07);
+            border: 1px solid rgba(252, 63, 55, 0.15);
+            border-radius: 5px;
+            padding: 1px 7px;
+            font-size: 11px;
+            color: #FC3F37;
+            white-space: nowrap;
+        }
+
         /* ── Side col ── */
         .side-col {
             display: flex;
@@ -489,7 +525,11 @@
             </a>
         </div>
 
-        {{-- ── Stats grid ── --}}
+        {{-- ══════════════════════════════════════
+             SECTION: Consultations
+        ══════════════════════════════════════ --}}
+        <div class="section-label"><span>Consultations</span></div>
+
         <div class="stats-grid">
 
             {{-- Total Consultations --}}
@@ -502,8 +542,6 @@
                 </div>
                 <div class="stat-num">{{ $stats['total'] }}</div>
                 <div class="stat-lbl">Total Consultations</div>
-
-                {{-- Mini breakdown bar: pending / active / completed ── --}}
                 @if ($stats['total'] > 0)
                     <div class="stat-breakdown" title="Pending / Active / Completed">
                         @php
@@ -511,12 +549,11 @@
                             $activeW = round(($stats['active'] / $stats['total']) * 100);
                             $completedW = 100 - $pendingW - $activeW;
                         @endphp
-                        <div class="breakdown-bar" style="background:#FBBF24; flex: {{ max($pendingW, 1) }};"></div>
-                        <div class="breakdown-bar" style="background:#4ADE80; flex: {{ max($activeW, 1) }};"></div>
-                        <div class="breakdown-bar" style="background:#333;    flex: {{ max($completedW, 1) }};"></div>
+                        <div class="breakdown-bar" style="background:#FBBF24; flex:{{ max($pendingW, 1) }};"></div>
+                        <div class="breakdown-bar" style="background:#4ADE80; flex:{{ max($activeW, 1) }};"></div>
+                        <div class="breakdown-bar" style="background:#333;    flex:{{ max($completedW, 1) }};"></div>
                     </div>
                 @endif
-
                 <div class="stat-trend {{ $stats['pending'] > 0 ? 't-wrn' : 't-neu' }}" style="margin-top:10px;">
                     @if ($stats['pending'] > 0)
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -536,7 +573,7 @@
                 </div>
             </a>
 
-            {{-- Pending ── --}}
+            {{-- Pending Consultations --}}
             <a href="{{ route('admin.consultations.index', ['status' => 'pending']) }}" class="stat-card">
                 <div class="stat-icon" style="background:rgba(251,191,36,0.10);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24"
@@ -566,7 +603,7 @@
                 </div>
             </a>
 
-            {{-- Active ── --}}
+            {{-- Active Consultations --}}
             <a href="{{ route('admin.consultations.index', ['status' => 'active']) }}" class="stat-card">
                 <div class="stat-icon" style="background:rgba(74,222,128,0.08);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80"
@@ -586,7 +623,7 @@
                 </div>
             </a>
 
-            {{-- Completed ── --}}
+            {{-- Completed Consultations --}}
             <a href="{{ route('admin.consultations.index', ['status' => 'completed']) }}" class="stat-card">
                 <div class="stat-icon" style="background:rgba(100,116,139,0.10);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8"
@@ -608,84 +645,297 @@
 
         </div>
 
-        {{-- ── Bottom ── --}}
+        {{-- ══════════════════════════════════════
+             SECTION: Contact Forms
+        ══════════════════════════════════════ --}}
+        <div class="section-label"><span>Contact Forms</span></div>
+
+        <div class="stats-grid" style="margin-bottom:32px;">
+
+            {{-- Total Contacts --}}
+            <a href="{{ route('admin.contacts.index') }}" class="stat-card">
+                <div class="stat-icon" style="background:rgba(252,63,55,0.08);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FC3F37"
+                        stroke-width="1.8" stroke-linecap="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                        <polyline points="22,6 12,13 2,6" />
+                    </svg>
+                </div>
+                <div class="stat-num">{{ $contactStats['total'] }}</div>
+                <div class="stat-lbl">Total Contact Forms</div>
+                @if ($contactStats['total'] > 0)
+                    <div class="stat-breakdown" title="Pending / Active / Completed">
+                        @php
+                            $cPendingW = round(($contactStats['pending'] / $contactStats['total']) * 100);
+                            $cActiveW = round(($contactStats['active'] / $contactStats['total']) * 100);
+                            $cCompletedW = 100 - $cPendingW - $cActiveW;
+                        @endphp
+                        <div class="breakdown-bar" style="background:#FBBF24; flex:{{ max($cPendingW, 1) }};"></div>
+                        <div class="breakdown-bar" style="background:#4ADE80; flex:{{ max($cActiveW, 1) }};"></div>
+                        <div class="breakdown-bar" style="background:#333;    flex:{{ max($cCompletedW, 1) }};"></div>
+                    </div>
+                @endif
+                <div class="stat-trend {{ $contactStats['pending'] > 0 ? 't-wrn' : 't-neu' }}" style="margin-top:10px;">
+                    @if ($contactStats['pending'] > 0)
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        {{ $contactStats['pending'] }} pending
+                    @else
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        All caught up
+                    @endif
+                </div>
+            </a>
+
+            {{-- Pending Contacts --}}
+            <a href="{{ route('admin.contacts.index', ['status' => 'pending']) }}" class="stat-card">
+                <div class="stat-icon" style="background:rgba(251,191,36,0.10);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBBF24"
+                        stroke-width="1.8" stroke-linecap="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+                <div class="stat-num">{{ $contactStats['pending'] }}</div>
+                <div class="stat-lbl">Pending Contacts</div>
+                <div class="stat-trend {{ $contactStats['pending'] > 0 ? 't-wrn' : 't-neu' }}">
+                    @if ($contactStats['pending'] > 0)
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        Needs attention
+                    @else
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                        None pending
+                    @endif
+                </div>
+            </a>
+
+            {{-- Active Contacts --}}
+            <a href="{{ route('admin.contacts.index', ['status' => 'active']) }}" class="stat-card">
+                <div class="stat-icon" style="background:rgba(74,222,128,0.08);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ADE80"
+                        stroke-width="1.8" stroke-linecap="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                        <polyline points="22 4 12 14.01 9 11.01" />
+                    </svg>
+                </div>
+                <div class="stat-num">{{ $contactStats['active'] }}</div>
+                <div class="stat-lbl">Active Contacts</div>
+                <div class="stat-trend t-up">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="18 15 12 9 6 15" />
+                    </svg>
+                    In progress
+                </div>
+            </a>
+
+            {{-- Completed Contacts --}}
+            <a href="{{ route('admin.contacts.index', ['status' => 'completed']) }}" class="stat-card">
+                <div class="stat-icon" style="background:rgba(100,116,139,0.10);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8"
+                        stroke-width="1.8" stroke-linecap="round">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                </div>
+                <div class="stat-num">{{ $contactStats['completed'] }}</div>
+                <div class="stat-lbl">Completed Contacts</div>
+                <div class="stat-trend t-neu">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5" stroke-linecap="round">
+                        <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    Closed
+                </div>
+            </a>
+
+        </div>
+
+        {{-- ══════════════════════════════════════
+             BOTTOM: Tables + Sidebar
+        ══════════════════════════════════════ --}}
         <div class="dash-bottom">
 
-            {{-- Recent Consultations table ── --}}
-            <div class="cc">
-                <div class="cc-head">
-                    <span class="cc-title">Recent Consultations</span>
-                    <a href="{{ route('admin.consultations.index') }}" class="cc-link">View all →</a>
-                </div>
-                <div style="overflow-x:auto;">
-                    <table class="dt">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($recentConsultations as $c)
+            {{-- ── LEFT: Tables column ── --}}
+            <div style="display:flex; flex-direction:column; gap:20px;">
+
+                {{-- Recent Consultations --}}
+                <div class="cc">
+                    <div class="cc-head">
+                        <span class="cc-title">Recent Consultations</span>
+                        <a href="{{ route('admin.consultations.index') }}" class="cc-link">View all →</a>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="dt">
+                            <thead>
                                 <tr>
-                                    <td class="td-name">{{ $c->name }}</td>
-                                    <td>
-                                        <div class="email-cell">
-                                            <span>{{ $c->email }}</span>
-                                            <button type="button" class="copy-email-btn"
-                                                data-email="{{ $c->email }}" data-tip="Copy email"
-                                                aria-label="Copy email address">
-                                                {{-- Copy icon --}}
-                                                <svg class="icon-copy" width="11" height="11" viewBox="0 0 24 24"
-                                                    fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <rect x="9" y="9" width="13" height="13" rx="2"
-                                                        ry="2" />
-                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                                                </svg>
-                                                {{-- Check icon (hidden by default) --}}
-                                                <svg class="icon-check" width="11" height="11"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
-                                                    style="display:none;">
-                                                    <polyline points="20 6 9 17 4 12" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td style="white-space:nowrap; color:#444;">
-                                        {{ $c->created_at->format('M d, Y') }}
-                                    </td>
-                                    <td>
-                                        <span class="pill pill-{{ $c->status }}">
-                                            {{ ucfirst($c->status) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.consultations.show', $c) }}"
-                                            style="font-size:12px; color:#333; text-decoration:none; transition:color 0.2s; white-space:nowrap;"
-                                            onmouseover="this.style.color='#FC3F37'" onmouseout="this.style.color='#333'">
-                                            View →
-                                        </a>
-                                    </td>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th></th>
                                 </tr>
-                            @empty
-                                <tr class="empty-row">
-                                    <td colspan="5">No consultations yet. They'll show up here once users submit the
-                                        form.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                @forelse ($recentConsultations as $c)
+                                    <tr>
+                                        <td class="td-name">{{ $c->name }}</td>
+                                        <td>
+                                            <div class="email-cell">
+                                                <span>{{ $c->email }}</span>
+                                                <button type="button" class="copy-email-btn"
+                                                    data-email="{{ $c->email }}" data-tip="Copy email"
+                                                    aria-label="Copy email address">
+                                                    <svg class="icon-copy" width="11" height="11"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <rect x="9" y="9" width="13" height="13" rx="2"
+                                                            ry="2" />
+                                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                                    </svg>
+                                                    <svg class="icon-check" width="11" height="11"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
+                                                        style="display:none;">
+                                                        <polyline points="20 6 9 17 4 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td style="white-space:nowrap; color:#444;">
+                                            {{ $c->created_at->format('M d, Y') }}
+                                        </td>
+                                        <td>
+                                            <span class="pill pill-{{ $c->status }}">
+                                                {{ ucfirst($c->status) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.consultations.show', $c) }}"
+                                                style="font-size:12px; color:#333; text-decoration:none; transition:color 0.2s; white-space:nowrap;"
+                                                onmouseover="this.style.color='#FC3F37'"
+                                                onmouseout="this.style.color='#333'">
+                                                View →
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="empty-row">
+                                        <td colspan="5">No consultations yet. They'll show up here once users submit the
+                                            form.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+                {{-- Recent Contact Forms --}}
+                <div class="cc">
+                    <div class="cc-head">
+                        <span class="cc-title">Recent Contact Forms</span>
+                        <a href="{{ route('admin.contacts.index') }}" class="cc-link">View all →</a>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="dt">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Company</th>
+                                    <th>Technologies</th>
+                                    <th>Engineers</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($recentContacts as $c)
+                                    <tr>
+                                        <td class="td-name">{{ $c->full_name }}</td>
+                                        <td>
+                                            <div class="email-cell">
+                                                <span>{{ $c->email }}</span>
+                                                <button type="button" class="copy-email-btn"
+                                                    data-email="{{ $c->email }}" data-tip="Copy email"
+                                                    aria-label="Copy email address">
+                                                    <svg class="icon-copy" width="11" height="11"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <rect x="9" y="9" width="13" height="13" rx="2"
+                                                            ry="2" />
+                                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                                    </svg>
+                                                    <svg class="icon-check" width="11" height="11"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
+                                                        style="display:none;">
+                                                        <polyline points="20 6 9 17 4 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td style="color:#555; font-size:12px;">{{ $c->company ?: '—' }}</td>
+                                        <td>
+                                            @if ($c->technologies && count($c->technologies))
+                                                <div style="display:flex; flex-wrap:wrap; gap:3px;">
+                                                    @foreach (array_slice($c->technologies, 0, 2) as $tech)
+                                                        <span class="tech-tag">{{ $tech }}</span>
+                                                    @endforeach
+                                                    @if (count($c->technologies) > 2)
+                                                        <span class="tech-tag">+{{ count($c->technologies) - 2 }}</span>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                <span style="color:#333;">—</span>
+                                            @endif
+                                        </td>
+                                        <td style="text-align:center; color:#555; font-size:12px;">
+                                            {{ $c->no_of_engineers ?? '—' }}
+                                        </td>
+                                        <td>
+                                            <span class="pill pill-{{ $c->status }}">{{ ucfirst($c->status) }}</span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.contacts.show', $c) }}"
+                                                style="font-size:12px; color:#333; text-decoration:none; transition:color 0.2s; white-space:nowrap;"
+                                                onmouseover="this.style.color='#FC3F37'"
+                                                onmouseout="this.style.color='#333'">
+                                                View →
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr class="empty-row">
+                                        <td colspan="7">No contact submissions yet.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
 
-            {{-- ── Right sidebar ── --}}
+            {{-- ── RIGHT: Sidebar column ── --}}
             <div class="side-col">
 
+                {{-- Quick Actions --}}
                 <div class="cc">
                     <div class="cc-head"><span class="cc-title">Quick Actions</span></div>
                     <div style="padding:14px; display:flex; flex-direction:column; gap:8px;">
@@ -705,6 +955,27 @@
                                                  border:1px solid rgba(251,191,36,0.22); border-radius:4px;
                                                  font-size:10px; font-weight:700; padding:1px 6px;">
                                         {{ $stats['pending'] }}
+                                    </span>
+                                @endif
+                            </span>
+                        </a>
+
+                        <a href="{{ route('admin.contacts.index', ['status' => 'pending']) }}" class="qa">
+                            <span class="qa-ic">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                    <polyline points="22,6 12,13 2,6" />
+                                </svg>
+                            </span>
+                            <span class="qa-lbl">
+                                Pending Contact Forms
+                                @if ($contactStats['pending'] > 0)
+                                    <span
+                                        style="margin-left:4px; background:rgba(251,191,36,0.15); color:#FBBF24;
+                                                 border:1px solid rgba(251,191,36,0.22); border-radius:4px;
+                                                 font-size:10px; font-weight:700; padding:1px 6px;">
+                                        {{ $contactStats['pending'] }}
                                     </span>
                                 @endif
                             </span>
@@ -749,7 +1020,7 @@
                     </div>
                 </div>
 
-                {{-- Consultation breakdown ── --}}
+                {{-- Consultation Status breakdown --}}
                 <div class="cc">
                     <div class="cc-head">
                         <span class="cc-title">Consultation Status</span>
@@ -795,6 +1066,52 @@
                     </div>
                 </div>
 
+                {{-- Contact Forms Status breakdown --}}
+                <div class="cc">
+                    <div class="cc-head">
+                        <span class="cc-title">Contact Form Status</span>
+                        <span
+                            style="display:flex; align-items:center; gap:6px; font-size:12px; color:#4ADE80; font-weight:500;">
+                            <span class="online-dot"></span> Live
+                        </span>
+                    </div>
+                    <div style="padding:18px 20px; display:flex; flex-direction:column; gap:13px;">
+                        <div class="ss-r">
+                            <span class="ss-k">Total</span>
+                            <span class="ss-v">{{ $contactStats['total'] }}</span>
+                        </div>
+                        <div class="ss-div"></div>
+                        <div class="ss-r">
+                            <span class="ss-k" style="display:flex; align-items:center; gap:6px;">
+                                <span
+                                    style="width:7px; height:7px; border-radius:50%; background:#FBBF24; display:inline-block; flex-shrink:0;"></span>
+                                Pending
+                            </span>
+                            <span class="ss-v" style="{{ $contactStats['pending'] > 0 ? 'color:#FBBF24;' : '' }}">
+                                {{ $contactStats['pending'] }}
+                            </span>
+                        </div>
+                        <div class="ss-div"></div>
+                        <div class="ss-r">
+                            <span class="ss-k" style="display:flex; align-items:center; gap:6px;">
+                                <span
+                                    style="width:7px; height:7px; border-radius:50%; background:#4ADE80; display:inline-block; flex-shrink:0;"></span>
+                                Active
+                            </span>
+                            <span class="ss-v">{{ $contactStats['active'] }}</span>
+                        </div>
+                        <div class="ss-div"></div>
+                        <div class="ss-r">
+                            <span class="ss-k" style="display:flex; align-items:center; gap:6px;">
+                                <span
+                                    style="width:7px; height:7px; border-radius:50%; background:#444; display:inline-block; flex-shrink:0;"></span>
+                                Completed
+                            </span>
+                            <span class="ss-v">{{ $contactStats['completed'] }}</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -806,7 +1123,7 @@
         (function() {
             /**
              * Copy email to clipboard — works in all modern browsers.
-             * Falls back to execCommand for older/non-https contexts.
+             * Falls back to execCommand for older / non-https contexts.
              */
             function copyToClipboard(text, btn) {
                 var iconCopy = btn.querySelector('.icon-copy');
@@ -825,7 +1142,6 @@
                     }, 2000);
                 }
 
-                /* Modern Clipboard API */
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(text).then(onSuccess).catch(function() {
                         fallbackCopy(text, onSuccess);
@@ -835,7 +1151,6 @@
                 }
             }
 
-            /* Fallback: create a hidden textarea, select its text, execCommand('copy') */
             function fallbackCopy(text, callback) {
                 var ta = document.createElement('textarea');
                 ta.value = text;
@@ -852,7 +1167,7 @@
                 document.body.removeChild(ta);
             }
 
-            /* Attach click listener to all copy buttons via event delegation */
+            /* Event delegation — works for all copy buttons on the page */
             document.addEventListener('click', function(e) {
                 var btn = e.target.closest('.copy-email-btn');
                 if (!btn) return;
