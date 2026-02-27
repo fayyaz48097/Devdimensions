@@ -139,7 +139,7 @@
                 <div class="flex items-center justify-end gap-4">
 
                     {{-- Success message (hidden by default) --}}
-                    <p id="modal-success-msg" class="hidden text-sm text-green-400 flex items-center gap-1.5"
+                    <p id="modal-success-msg" class="hidden text-sm text-green-400  items-center gap-1.5"
                         style="font-family: 'Gilroy-Medium', sans-serif;">
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" class="flex-shrink-0">
                             <circle cx="7.5" cy="7.5" r="7" stroke="currentColor" stroke-width="1.4" />
