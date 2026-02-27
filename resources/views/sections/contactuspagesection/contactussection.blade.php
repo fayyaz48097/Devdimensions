@@ -634,16 +634,16 @@
                         <div class="dd-svc-grid">
                             @php
                                 $ddSvcs = [
-                                    ['UX/UI Design', 'icon-1.svg'],
-                                    ['React JS', 'Frame-1261153157-10.png'],
-                                    ['React Native', 'Frame-1261153157-13.png'],
-                                    ['Vue JS', 'Frame-1261153157-15.png'],
-                                    ['Laravel', 'Frame-1261153157-19.png'],
-                                    ['MERN Stack', 'Frame-1261153157-21.png'],
-                                    ['MEAN Stack', 'Frame-1261153383.png'],
-                                    ['Quality Assurance', 'Frame-1261153385.png'],
-                                    ['DevOps', 'Frame-1261153386.png'],
-                                    ['Others', 'startup-1.svg'],
+                                    ['UX/UI Design', 'UI-UX.svg'],
+                                    ['React JS', 'react.svg'],
+                                    ['React Native', 'react-native.svg'],
+                                    ['Vue JS', 'vue-jus.svg'],
+                                    ['Laravel', 'laraval.svg'],
+                                    ['MERN Stack', 'mern-stack.svg'],
+                                    ['MEAN Stack', 'mern-stockk.svg'],
+                                    ['Quality Assurance', 'QA.svg'],
+                                    ['DevOps', 'Dev-ops-1.svg'],
+                                    ['Others', 'others.svg'],
                                 ];
                             @endphp
                             @foreach ($ddSvcs as [$lbl, $ico])
