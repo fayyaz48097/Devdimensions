@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\ConsultationController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +24,9 @@ Route::get('/about-us', fn() => view('pages.aboutus.aboutus'))->name('about');
 Route::get('/case-studies', fn() => view('pages.casestudy.casestudy'))->name('casestudy');
 Route::get('/contact-us', fn() => view('pages.contactus.contactus'))->name('contact');
 
+// ── Public: Consultation form submission (modal AJAX) ──
+Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
+
 
 // ── Admin Auth (guest — redirects if already logged in) ──
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -35,8 +41,8 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // Dashboard — views/pages/admin/dashboard.blade.php
-    Route::get('/', fn() => view('pages.admin.dashboard'))->name('dashboard');
+    // Dashboard — live data from DashboardController
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Pages — views/pages/admin/pages/
     Route::prefix('pages')->name('pages.')->group(function () {
@@ -66,7 +72,9 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
 
     // Consultations — views/pages/admin/consultations/
     Route::prefix('consultations')->name('consultations.')->group(function () {
-        Route::get('/', fn() => view('pages.admin.consultations.index'))->name('index');
+        Route::get('/',                        [AdminConsultationController::class, 'index'])->name('index');
+        Route::get('/{consultation}',          [AdminConsultationController::class, 'show'])->name('show');
+        Route::patch('/{consultation}/status', [AdminConsultationController::class, 'updateStatus'])->name('updateStatus');
     });
 
     // Contacts — views/pages/admin/contacts/

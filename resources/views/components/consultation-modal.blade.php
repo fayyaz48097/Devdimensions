@@ -1,9 +1,11 @@
 {{--
     Consultation Modal Component
-    Triggered by: #open-consultation-modal (any element with this ID or class)
+    Triggered by any element with: data-open-consultation attribute
     Usage: Include once in your layout, e.g. in app.blade.php before </body>
-    
+
     <x-consultation-modal />
+    OR
+    @include('components.consultation-modal')
 --}}
 
 {{-- Backdrop --}}
@@ -64,7 +66,24 @@
 
         {{-- Body --}}
         <div class="px-8 py-7">
+
+            {{-- Server-side error (fallback for JS-off) --}}
+            <div id="modal-server-error"
+                class="hidden mb-5  items-center gap-2.5 p-4
+                        bg-[rgba(252,63,55,0.07)] border border-[#FC3F37]/20 rounded-xl
+                        text-[#FC3F37] text-sm"
+                style="font-family:'Gilroy-Regular',sans-serif;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round" class="flex-shrink-0">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+                <span id="modal-server-error-text"></span>
+            </div>
+
             <form id="consultation-form" novalidate>
+                @csrf
 
                 {{-- Row: Name + Email --}}
                 <div class="grid grid-cols-1 gap-5 mb-5 md:grid-cols-2">
@@ -139,17 +158,18 @@
                 <div class="flex items-center justify-end gap-4">
 
                     {{-- Success message (hidden by default) --}}
-                    <p id="modal-success-msg" class="hidden text-sm text-green-400  items-center gap-1.5"
+                    <p id="modal-success-msg" class="hidden text-sm text-green-400 items-center gap-1.5"
                         style="font-family: 'Gilroy-Medium', sans-serif;">
-                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" class="flex-shrink-0">
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
+                            class="flex-shrink-0">
                             <circle cx="7.5" cy="7.5" r="7" stroke="currentColor" stroke-width="1.4" />
-                            <path d="M4.5 7.5l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-                                stroke-linejoin="round" />
+                            <path d="M4.5 7.5l2 2 4-4" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         We'll be in touch soon!
                     </p>
 
-                    {{-- Submit Button (reusable btn-theme style, pure Tailwind) --}}
+                    {{-- Submit Button --}}
                     <button type="submit" id="modal-submit-btn"
                         class="group relative inline-flex items-center
                                h-[44px] min-w-[200px]
@@ -160,29 +180,21 @@
                                transition-all duration-300 ease-in-out
                                focus:outline-none focus:ring-2 focus:ring-[#FC3F37]/50"
                         style="background: linear-gradient(90deg, rgba(181,30,23,1) 0%, rgba(252,63,55,1) 100%);
-                               font-family: 'Gilroy-Medium', sans-serif; line-height: 44px;"
-                        onmouseover="this.style.background='rgba(181,30,23,1)'"
-                        onmouseout="this.style.background='linear-gradient(90deg, rgba(181,30,23,1) 0%, rgba(252,63,55,1) 100%)'">
+                               font-family: 'Gilroy-Medium', sans-serif; line-height: 44px;">
+
                         <span id="modal-btn-label">Get Free Consultation</span>
 
-                        {{-- Icon wrapper --}}
                         <span
-                            class="absolute right-2 top-1/2 -translate-y-1/2
-                                     flex items-center justify-center w-[30px] h-[30px]">
-                            {{-- Diamond bg --}}
+                            class="absolute top-1/2 right-2 -translate-y-1/2 flex items-center justify-center w-[30px] h-[30px]">
                             <span
-                                class="absolute inset-0 bg-white/20 rounded-[4px]
-                                         transition-all duration-300 ease-in-out
-                                         group-hover:rotate-45 group-hover:bg-white/10"></span>
-                            {{-- Arrow --}}
+                                class="absolute inset-0 bg-white/20 rounded-[4px] transition-all duration-300 group-hover:rotate-[45deg] group-hover:bg-white/10"></span>
                             <svg id="modal-btn-icon"
-                                class="relative z-10 transition-all duration-300 ease-in-out -rotate-45 group-hover:rotate-0"
+                                class="relative z-10 transition-all duration-300 -rotate-45 group-hover:rotate-0"
                                 width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
                             </svg>
-                            {{-- Spinner (hidden by default) --}}
                             <svg id="modal-btn-spinner" class="relative z-10 hidden animate-spin" width="16"
                                 height="16" viewBox="0 0 24 24" fill="none" stroke="white"
                                 stroke-width="2.5">
@@ -219,7 +231,10 @@
         var btnIcon = document.getElementById('modal-btn-icon');
         var btnSpinner = document.getElementById('modal-btn-spinner');
         var successMsg = document.getElementById('modal-success-msg');
+        var serverErr = document.getElementById('modal-server-error');
+        var serverErrTxt = document.getElementById('modal-server-error-text');
 
+        /* ── Open / Close ── */
         function openModal() {
             backdrop.classList.remove('opacity-0', 'pointer-events-none');
             backdrop.classList.add('opacity-100');
@@ -244,7 +259,7 @@
             }, 310);
         }
 
-        /* Delegated trigger — catches nav button, hero CTA, any future trigger */
+        /* Delegated trigger — any element with [data-open-consultation] */
         document.addEventListener('click', function(e) {
             if (e.target.closest('[data-open-consultation]')) {
                 e.preventDefault();
@@ -260,19 +275,15 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        /* Hover on submit button */
-        submitBtn.addEventListener('mouseover', function() {
-            this.style.background = 'rgba(181,30,23,1)';
-        });
-        submitBtn.addEventListener('mouseout', function() {
-            this.style.background =
-                'linear-gradient(90deg,rgba(181,30,23,1) 0%,rgba(252,63,55,1) 100%)';
-        });
-
-        /* Validation */
+        /* ── Validation helpers ── */
         function isEmail(v) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
         }
+
+        var nameInput = document.getElementById('modal-name');
+        var emailInput = document.getElementById('modal-email');
+        var msgInput = document.getElementById('modal-message');
+        var errors = form.querySelectorAll('.modal-error');
 
         function validateField(input, errorEl, check) {
             var ok = check(input.value.trim());
@@ -281,17 +292,14 @@
             return ok;
         }
 
-        var nameInput = document.getElementById('modal-name');
-        var emailInput = document.getElementById('modal-email');
-        var msgInput = document.getElementById('modal-message');
-        var errors = form.querySelectorAll('.modal-error');
-
         [nameInput, emailInput, msgInput].forEach(function(el) {
             el.addEventListener('input', function() {
                 this.style.borderColor = '';
+                serverErr.classList.add('hidden');
             });
         });
 
+        /* ── Submit — AJAX ── */
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -302,31 +310,43 @@
             var ok3 = validateField(msgInput, errors[2], function(v) {
                 return v.length >= 5;
             });
-
             if (!ok1 || !ok2 || !ok3) return;
 
+            /* Loading state */
             submitBtn.disabled = true;
             btnLabel.textContent = 'Sending…';
             btnIcon.classList.add('hidden');
             btnSpinner.classList.remove('hidden');
+            serverErr.classList.add('hidden');
 
-            /*
-             * Replace setTimeout with your real fetch, e.g.:
-             *
-             * fetch('/contact', {
-             *     method: 'POST',
-             *     headers: {
-             *         'Content-Type': 'application/json',
-             *         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-             *     },
-             *     body: JSON.stringify({
-             *         name: nameInput.value.trim(),
-             *         email: emailInput.value.trim(),
-             *         message: msgInput.value.trim()
-             *     })
-             * }).then(() => showSuccess()).catch(() => resetBtn());
-             */
-            setTimeout(showSuccess, 1600);
+            var csrfToken = document.querySelector('meta[name="csrf-token"]');
+
+            fetch('{{ route('consultations.store') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken ? csrfToken.content : '',
+                    },
+                    body: JSON.stringify({
+                        name: nameInput.value.trim(),
+                        email: emailInput.value.trim(),
+                        message: msgInput.value.trim(),
+                    })
+                })
+                .then(function(res) {
+                    return res.json();
+                })
+                .then(function(data) {
+                    if (data.success) {
+                        showSuccess();
+                    } else {
+                        showServerError(data.message || 'Something went wrong. Please try again.');
+                    }
+                })
+                .catch(function() {
+                    showServerError('Network error. Please check your connection and try again.');
+                });
         });
 
         function showSuccess() {
@@ -341,7 +361,16 @@
                 successMsg.style.display = '';
                 successMsg.classList.add('hidden');
                 closeModal();
-            }, 2500);
+            }, 2800);
+        }
+
+        function showServerError(msg) {
+            submitBtn.disabled = false;
+            btnLabel.textContent = 'Get Free Consultation';
+            btnIcon.classList.remove('hidden');
+            btnSpinner.classList.add('hidden');
+            serverErrTxt.textContent = msg;
+            serverErr.classList.remove('hidden');
         }
 
     });

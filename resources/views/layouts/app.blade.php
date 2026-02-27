@@ -17,7 +17,7 @@
         <!-- Footer -->
         @include('components.footer')
     </div>
-    @include('components.model')
+    @include('components.consultation-modal')
     @stack('scripts')
 </body>
 

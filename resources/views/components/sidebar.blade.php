@@ -368,7 +368,9 @@
                 </svg>
             </span>
             Consultations
-            <span class="nav-badge">12</span>
+            @if (($sidebarConsultCount ?? 0) > 0)
+                <span class="nav-badge">{{ $sidebarConsultCount }}</span>
+            @endif
         </a>
 
         {{-- Contact Submissions --}}
