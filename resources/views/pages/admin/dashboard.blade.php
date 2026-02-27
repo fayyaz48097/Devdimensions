@@ -25,7 +25,7 @@
         .dash-welcome h1 {
             font-size: 22px;
             font-weight: 700;
-            color: #fff;
+            color: #000;
             letter-spacing: -0.4px;
             margin: 0 0 4px;
             line-height: 1.2;
@@ -382,7 +382,7 @@
         {{-- Welcome --}}
         <div class="dash-welcome">
             <div>
-                <h1 style="color:#FFFFFF;">Good morning, Admin 👋</h1>
+                <h1>Good morning, Admin 👋</h1>
                 <p>Here's what's happening on your site today.</p>
             </div>
             <a href="{{ route('admin.casestudies.create') }}" class="btn-add">
