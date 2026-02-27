@@ -1,13 +1,13 @@
 {{-- Mobile Menu --}}
 <div id="mobile-menu"
-    class="fixed inset-0 z-50 bg-black translate-x-full transition-transform duration-300 ease-in-out lg:hidden">
-    <div class="p-6 h-full flex flex-col">
+    class="fixed inset-0 z-50 transition-transform duration-300 ease-in-out translate-x-full bg-black lg:hidden">
+    <div class="flex flex-col h-full p-6">
         {{-- Mobile Header --}}
         <div class="flex items-center justify-between mb-10">
             <a href="{{ url('/') }}" class="flex items-center gap-2">
                 <img src="{{ asset('assets/images/logo.svg') }}" alt="DevDimensions Logo" class="w-full h-auto">
             </a>
-            <button id="mobile-close" class="text-white p-2" aria-label="Close menu">
+            <button id="mobile-close" class="p-2 text-white" aria-label="Close menu">
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
@@ -52,17 +52,16 @@
 
         {{-- Mobile CTA --}}
         <div class="mt-8">
-            <a href="{{ url('/contact-us') }}"
-                class="block w-full text-center py-4 px-6 border-2 border-white rounded-xl text-white font-semibold text-lg
-                      hover:bg-white hover:text-black transition-all duration-200">
+            <button type="button" data-open-consultation
+                class="block w-full px-6 py-4 text-lg font-semibold text-center text-white transition-all duration-200 bg-transparent border-2 border-white cursor-pointer rounded-xl hover:bg-white hover:text-black">
                 Get Free Consultation
-            </a>
+            </button>
         </div>
     </div>
 </div>
 
 {{-- Mobile Overlay --}}
-<div id="mobile-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden lg:hidden"></div>
+<div id="mobile-overlay" class="fixed inset-0 z-40 hidden bg-black/60 backdrop-blur-sm lg:hidden"></div>
 
 
 {{-- Desktop Navigation --}}
@@ -73,13 +72,13 @@
         <div class="flex items-center justify-between">
 
             {{-- Logo - Updated path to assets/images/logo.svg --}}
-            <a href="{{ url('/') }}" class="flex items-center gap-2 flex-shrink-0">
+            <a href="{{ url('/') }}" class="flex items-center flex-shrink-0 gap-2">
                 <img src="{{ asset('assets/images/logo.svg') }}" alt="DevDimensions Logo" class="w-full h-auto">
 
             </a>
 
             {{-- Desktop Nav Links --}}
-            <ul class="hidden lg:flex items-center gap-10">
+            <ul class="items-center hidden gap-10 lg:flex">
                 <li>
                     <a href="{{ url('/') }}"
                         class="text-sm transition-colors duration-200 relative group
@@ -112,13 +111,13 @@
 
             {{-- Right Side: CTA + Hamburger --}}
             <div class="flex items-center gap-4">
-                <a href="{{ url('/contact-us') }}"
+                <button type="button" id="open-consultation-modal" data-open-consultation
                     class="hidden lg:inline-flex items-center px-6 py-2.5 border border-white rounded-lg text-white text-sm font-medium
-                          hover:bg-[linear-gradient(90deg,_rgba(181,30,23,1)_0%,_rgba(252,63,55,1)_100%)] hover:border-[#B51E17] hover:text-white transition-all duration-200 whitespace-nowrap">
+                          hover:bg-[linear-gradient(90deg,_rgba(181,30,23,1)_0%,_rgba(252,63,55,1)_100%)] hover:border-[#B51E17] hover:text-white transition-all duration-200 whitespace-nowrap cursor-pointer bg-transparent">
                     Get Free Consultation
-                </a>
+                </button>
 
-                <button id="mobile-open" class="lg:hidden text-white p-2" aria-label="Open menu">
+                <button id="mobile-open" class="p-2 text-white lg:hidden" aria-label="Open menu">
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round">
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -131,46 +130,45 @@
     </div>
 </nav>
 
-@push('scripts')
-    <script>
-        (function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileOverlay = document.getElementById('mobile-overlay');
-            const openBtn = document.getElementById('mobile-open');
-            const closeBtn = document.getElementById('mobile-close');
-            const nav = document.getElementById('main-nav');
 
-            function openMenu() {
-                mobileMenu.classList.remove('translate-x-full');
-                mobileOverlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
+<script>
+    (function() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+        const openBtn = document.getElementById('mobile-open');
+        const closeBtn = document.getElementById('mobile-close');
+        const nav = document.getElementById('main-nav');
 
-            function closeMenu() {
-                mobileMenu.classList.add('translate-x-full');
-                mobileOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
+        function openMenu() {
+            mobileMenu.classList.remove('translate-x-full');
+            mobileOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
-            openBtn.addEventListener('click', openMenu);
-            closeBtn.addEventListener('click', closeMenu);
-            mobileOverlay.addEventListener('click', closeMenu);
+        function closeMenu() {
+            mobileMenu.classList.add('translate-x-full');
+            mobileOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
 
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 20) {
-                    nav.classList.add('bg-black/95', 'backdrop-blur-md', 'border-b', 'border-white/5');
-                    nav.classList.remove('py-[30px]');
-                    nav.classList.add('py-[15px]');
-                } else {
-                    nav.classList.remove('bg-black/95', 'backdrop-blur-md', 'border-b', 'border-white/5');
-                    nav.classList.add('py-[30px]');
-                    nav.classList.remove('py-[15px]');
-                }
-            });
+        openBtn.addEventListener('click', openMenu);
+        closeBtn.addEventListener('click', closeMenu);
+        mobileOverlay.addEventListener('click', closeMenu);
 
+        window.addEventListener('scroll', function() {
             if (window.scrollY > 20) {
                 nav.classList.add('bg-black/95', 'backdrop-blur-md', 'border-b', 'border-white/5');
+                nav.classList.remove('py-[30px]');
+                nav.classList.add('py-[15px]');
+            } else {
+                nav.classList.remove('bg-black/95', 'backdrop-blur-md', 'border-b', 'border-white/5');
+                nav.classList.add('py-[30px]');
+                nav.classList.remove('py-[15px]');
             }
-        })();
-    </script>
-@endpush
+        });
+
+        if (window.scrollY > 20) {
+            nav.classList.add('bg-black/95', 'backdrop-blur-md', 'border-b', 'border-white/5');
+        }
+    })();
+</script>
