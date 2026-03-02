@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             ProcessSectionSeeder::class,   // ← ADD
             HireSectionSeeder::class,
+            PartnerSeeder::class,
+            TestimonialSeeder::class,
         ]);
     }
 }

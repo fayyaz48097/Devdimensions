@@ -1,39 +1,52 @@
 {{-- ============================================================
      Our Partners Section
-     resources/views/sections/homepagesections/ourclientsection.blade.php
+     SAVE AS: resources/views/sections/homepagesections/ourclientsection.blade.php
+
+     Section-level active/inactive: hides entire section when inactive.
+     Partners: logo image, alt text — all from DB.
+     All CSS/layout is IDENTICAL to the original.
 ============================================================ --}}
 
-<section class="w-full py-16 bg-black">
-    <div class="px-6 mx-auto max-w-7xl">
+@php
+    use App\Models\PartnerSectionSetting;
+    use App\Models\Partner;
 
-        {{-- Heading --}}
-        <h2 class="text-3xl font-semibold tracking-tight text-center text-white md:text-5xl mb-14"
-            style=" letter-spacing:-0.5px;">
-            Our Partners
-        </h2>
+    $partnerSetting = PartnerSectionSetting::instance();
+    $partners = Partner::published()->orderBy('sort_order')->get();
+@endphp
 
-        {{-- Logo row --}}
-        <div class="grid items-center grid-cols-3 gap-[3rem] md:gap-[5.25rem] gap-y-10 md:grid-cols-3 lg:grid-cols-6">
+@if ($partnerSetting->isActive())
 
-            @php
-                $partners = [
-                    ['src' => 'Mask-group.svg', 'alt' => 'Thinkrite'],
-                    ['src' => 'Mask-group-1.svg', 'alt' => 'Ellianos Coffee'],
-                    ['src' => 'logo-1-1.svg', 'alt' => 'Panoramic Ventures'],
-                    ['src' => 'Mask-group-2.svg', 'alt' => 'FHG'],
-                    ['src' => 'Frame-1261152960-1.svg', 'alt' => 'University of Pittsburgh'],
-                    ['src' => 'Mask-group-3.svg', 'alt' => 'Virga Labs'],
-                ];
-            @endphp
+    <section class="w-full py-16 bg-black">
+        <div class="px-6 mx-auto max-w-7xl">
 
-            @foreach ($partners as $partner)
-                <div class="flex items-center justify-center ">
-                    <img src="{{ asset('assets/images/' . $partner['src']) }}" alt="{{ $partner['alt'] }}"
-                        class="object-contain h-auto max-w-full">
+            {{-- Heading --}}
+            <h2 class="text-3xl font-semibold tracking-tight text-center text-white md:text-5xl mb-14"
+                style="letter-spacing:-0.5px;">
+                {{ $partnerSetting->heading }}
+            </h2>
+
+            {{-- Logo row --}}
+            @if ($partners->isNotEmpty())
+                <div
+                    class="grid items-center grid-cols-3 gap-[3rem] md:gap-[5.25rem] gap-y-10 md:grid-cols-3 lg:grid-cols-6">
+                    @foreach ($partners as $partner)
+                        <div class="flex items-center justify-center">
+                            @if ($partner->link_url)
+                                <a href="{{ url($partner->link_url) }}" target="_blank" rel="noopener noreferrer">
+                                    <img src="{{ $partner->imageUrl() }}" alt="{{ $partner->alt_text }}"
+                                        class="object-contain h-auto max-w-full">
+                                </a>
+                            @else
+                                <img src="{{ $partner->imageUrl() }}" alt="{{ $partner->alt_text }}"
+                                    class="object-contain h-auto max-w-full">
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
+            @endif
 
         </div>
+    </section>
 
-    </div>
-</section>
+@endif {{-- /section active check --}}

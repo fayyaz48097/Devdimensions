@@ -1,15 +1,22 @@
 <?php
+// SAVE AS: routes/web.php
+// CHANGES FROM ORIGINAL:
+//   • Added use statements for PartnerSectionController & TestimonialSectionController
+//   • Replaced stub Route::get('/our-client', ...) with full CRUD routes
+//   • Replaced stub Route::get('/testimonial', ...) with full CRUD routes
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\HomeHeroSectionController;
-use App\Http\Controllers\Admin\MarqueeItemController;
 use App\Http\Controllers\Admin\FindTalentStepController;
 use App\Http\Controllers\Admin\HireSectionController;
+use App\Http\Controllers\Admin\HomeHeroSectionController;
+use App\Http\Controllers\Admin\MarqueeItemController;
+use App\Http\Controllers\Admin\PartnerSectionController;
 use App\Http\Controllers\Admin\PortfolioProjectController;
 use App\Http\Controllers\Admin\ProcessSectionController;
+use App\Http\Controllers\Admin\TestimonialSectionController;
 use App\Http\Controllers\Admin\WelcomeSectionController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
@@ -55,7 +62,7 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pages (top-level page editors — kept for backwards compat if needed)
+    // Pages (top-level page editors)
     Route::prefix('pages')->name('pages.')->group(function () {
         Route::get('/home',         fn() => view('pages.admin.pages.home'))->name('home');
         Route::get('/about',        fn() => view('pages.admin.pages.about'))->name('about');
@@ -77,7 +84,6 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::delete('/hero/{homeHeroSection}',       [HomeHeroSectionController::class, 'destroy'])->name('hero.destroy');
             Route::post('/hero/{id}/restore',              [HomeHeroSectionController::class, 'restore'])->name('hero.restore');
 
-            // Remaining section stubs (blade-only for now)
             // Marquee Section — full CRUD
             Route::get('/marquee',                             [MarqueeItemController::class, 'index'])->name('marquee');
             Route::post('/marquee',                            [MarqueeItemController::class, 'store'])->name('marquee.store');
@@ -86,8 +92,8 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::delete('/marquee/{marqueeItem}',            [MarqueeItemController::class, 'destroy'])->name('marquee.destroy');
             Route::post('/marquee/{id}/restore',               [MarqueeItemController::class, 'restore'])->name('marquee.restore');
             Route::post('/marquee/sort',                       [MarqueeItemController::class, 'sort'])->name('marquee.sort');
+
             // Find Talent Section — full CRUD
-            // NOTE: static segments (sort) MUST come before wildcard ({findTalentStep}) routes
             Route::get('/find-talent',                                [FindTalentStepController::class, 'index'])->name('findtalent');
             Route::post('/find-talent',                               [FindTalentStepController::class, 'store'])->name('findtalent.store');
             Route::post('/find-talent/sort',                          [FindTalentStepController::class, 'sort'])->name('findtalent.sort');
@@ -95,28 +101,28 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/find-talent/{findTalentStep}/status',      [FindTalentStepController::class, 'toggleStatus'])->name('findtalent.toggleStatus');
             Route::delete('/find-talent/{findTalentStep}',            [FindTalentStepController::class, 'destroy'])->name('findtalent.destroy');
             Route::post('/find-talent/{id}/restore',                  [FindTalentStepController::class, 'restore'])->name('findtalent.restore');
-            // Welcome Section — full CRUD (singleton + slider lines + slider items)
-            // NOTE: all static sub-segments (sort) MUST come before wildcard routes
+
+            // Welcome Section — full CRUD
             Route::get('/welcome',                                                            [WelcomeSectionController::class, 'index'])->name('welcome');
             Route::post('/welcome',                                                           [WelcomeSectionController::class, 'store'])->name('welcome.store');
             Route::put('/welcome/{welcomeSection}',                                           [WelcomeSectionController::class, 'update'])->name('welcome.update');
             Route::patch('/welcome/{welcomeSection}/status',                                  [WelcomeSectionController::class, 'toggleStatus'])->name('welcome.toggleStatus');
             Route::delete('/welcome/{welcomeSection}',                                        [WelcomeSectionController::class, 'destroy'])->name('welcome.destroy');
             Route::post('/welcome/{id}/restore',                                              [WelcomeSectionController::class, 'restore'])->name('welcome.restore');
-            // Lines
             Route::post('/welcome/{welcomeSection}/lines/sort',                               [WelcomeSectionController::class, 'sortLines'])->name('welcome.lines.sort');
             Route::post('/welcome/{welcomeSection}/lines',                                    [WelcomeSectionController::class, 'storeLine'])->name('welcome.lines.store');
             Route::put('/welcome/{welcomeSection}/lines/{line}',                              [WelcomeSectionController::class, 'updateLine'])->name('welcome.lines.update');
             Route::patch('/welcome/{welcomeSection}/lines/{line}/status',                     [WelcomeSectionController::class, 'toggleLineStatus'])->name('welcome.lines.toggleStatus');
             Route::delete('/welcome/{welcomeSection}/lines/{line}',                           [WelcomeSectionController::class, 'destroyLine'])->name('welcome.lines.destroy');
             Route::post('/welcome/{sectionId}/lines/{lineId}/restore',                        [WelcomeSectionController::class, 'restoreLine'])->name('welcome.lines.restore');
-            // Items
             Route::post('/welcome/{welcomeSection}/lines/{line}/items/sort',                  [WelcomeSectionController::class, 'sortItems'])->name('welcome.items.sort');
             Route::post('/welcome/{welcomeSection}/lines/{line}/items',                       [WelcomeSectionController::class, 'storeItem'])->name('welcome.items.store');
             Route::put('/welcome/{welcomeSection}/lines/{line}/items/{item}',                 [WelcomeSectionController::class, 'updateItem'])->name('welcome.items.update');
             Route::patch('/welcome/{welcomeSection}/lines/{line}/items/{item}/status',        [WelcomeSectionController::class, 'toggleItemStatus'])->name('welcome.items.toggleStatus');
             Route::delete('/welcome/{welcomeSection}/lines/{line}/items/{item}',              [WelcomeSectionController::class, 'destroyItem'])->name('welcome.items.destroy');
             Route::post('/welcome/{sectionId}/lines/{lineId}/items/{itemId}/restore',         [WelcomeSectionController::class, 'restoreItem'])->name('welcome.items.restore');
+
+            // Portfolio Section — full CRUD
             Route::get('/portfolio',                                    [PortfolioProjectController::class, 'index'])->name('portfolio');
             Route::post('/portfolio',                                   [PortfolioProjectController::class, 'store'])->name('portfolio.store');
             Route::post('/portfolio/sort',                              [PortfolioProjectController::class, 'sort'])->name('portfolio.sort');
@@ -124,30 +130,50 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/portfolio/{portfolioProject}/status',        [PortfolioProjectController::class, 'toggleStatus'])->name('portfolio.toggleStatus');
             Route::delete('/portfolio/{portfolioProject}',              [PortfolioProjectController::class, 'destroy'])->name('portfolio.destroy');
             Route::post('/portfolio/{id}/restore',                      [PortfolioProjectController::class, 'restore'])->name('portfolio.restore');
+
+            // Our Process Section — full CRUD
             Route::get('/ourprocess',                                          [ProcessSectionController::class, 'index'])->name('ourprocess');
-            Route::post('/ourprocess/settings',                                 [ProcessSectionController::class, 'updateSettings'])->name('ourprocess.settings.update');
-            Route::post('/ourprocess/steps',                                    [ProcessSectionController::class, 'storeStep'])->name('ourprocess.steps.store');
-            Route::post('/ourprocess/steps/sort',                               [ProcessSectionController::class, 'sortSteps'])->name('ourprocess.steps.sort');
-            Route::post('/ourprocess/steps/{processStep}',                      [ProcessSectionController::class, 'updateStep'])->name('ourprocess.steps.update');
-            Route::patch('/ourprocess/steps/{processStep}/status',               [ProcessSectionController::class, 'toggleStepStatus'])->name('ourprocess.steps.toggleStatus');
-            Route::delete('/ourprocess/steps/{processStep}',                      [ProcessSectionController::class, 'destroyStep'])->name('ourprocess.steps.destroy');
-            Route::post('/ourprocess/steps/{id}/restore',                       [ProcessSectionController::class, 'restoreStep'])->name('ourprocess.steps.restore');
+            Route::post('/ourprocess/settings',                                [ProcessSectionController::class, 'updateSettings'])->name('ourprocess.settings.update');
+            Route::post('/ourprocess/steps',                                   [ProcessSectionController::class, 'storeStep'])->name('ourprocess.steps.store');
+            Route::post('/ourprocess/steps/sort',                              [ProcessSectionController::class, 'sortSteps'])->name('ourprocess.steps.sort');
+            Route::post('/ourprocess/steps/{processStep}',                     [ProcessSectionController::class, 'updateStep'])->name('ourprocess.steps.update');
+            Route::patch('/ourprocess/steps/{processStep}/status',             [ProcessSectionController::class, 'toggleStepStatus'])->name('ourprocess.steps.toggleStatus');
+            Route::delete('/ourprocess/steps/{processStep}',                   [ProcessSectionController::class, 'destroyStep'])->name('ourprocess.steps.destroy');
+            Route::post('/ourprocess/steps/{id}/restore',                      [ProcessSectionController::class, 'restoreStep'])->name('ourprocess.steps.restore');
 
-
+            // Hire Us Section — full CRUD
             Route::get('/hireus',                                              [HireSectionController::class, 'index'])->name('hireus');
-            Route::post('/hireus/settings',                                     [HireSectionController::class, 'updateSettings'])->name('hireus.settings.update');
-            Route::post('/hireus/boxes',                                        [HireSectionController::class, 'storeBox'])->name('hireus.boxes.store');
-            Route::post('/hireus/boxes/sort',                                   [HireSectionController::class, 'sortBoxes'])->name('hireus.boxes.sort');
-            Route::post('/hireus/boxes/{hireBox}',                              [HireSectionController::class, 'updateBox'])->name('hireus.boxes.update');
-            Route::patch('/hireus/boxes/{hireBox}/status',                       [HireSectionController::class, 'toggleBoxStatus'])->name('hireus.boxes.toggleStatus');
-            Route::delete('/hireus/boxes/{hireBox}',                              [HireSectionController::class, 'destroyBox'])->name('hireus.boxes.destroy');
-            Route::post('/hireus/boxes/{id}/restore',                           [HireSectionController::class, 'restoreBox'])->name('hireus.boxes.restore');
+            Route::post('/hireus/settings',                                    [HireSectionController::class, 'updateSettings'])->name('hireus.settings.update');
+            Route::post('/hireus/boxes',                                       [HireSectionController::class, 'storeBox'])->name('hireus.boxes.store');
+            Route::post('/hireus/boxes/sort',                                  [HireSectionController::class, 'sortBoxes'])->name('hireus.boxes.sort');
+            Route::post('/hireus/boxes/{hireBox}',                             [HireSectionController::class, 'updateBox'])->name('hireus.boxes.update');
+            Route::patch('/hireus/boxes/{hireBox}/status',                     [HireSectionController::class, 'toggleBoxStatus'])->name('hireus.boxes.toggleStatus');
+            Route::delete('/hireus/boxes/{hireBox}',                           [HireSectionController::class, 'destroyBox'])->name('hireus.boxes.destroy');
+            Route::post('/hireus/boxes/{id}/restore',                          [HireSectionController::class, 'restoreBox'])->name('hireus.boxes.restore');
 
+            // Our Partners (Client) Section — full CRUD
+            Route::get('/our-client',                                          [PartnerSectionController::class, 'index'])->name('ourclient');
+            Route::post('/our-client/settings',                                [PartnerSectionController::class, 'updateSettings'])->name('ourclient.settings.update');
+            Route::post('/our-client/partners',                                [PartnerSectionController::class, 'storePartner'])->name('ourclient.partners.store');
+            Route::post('/our-client/partners/sort',                           [PartnerSectionController::class, 'sortPartners'])->name('ourclient.partners.sort');
+            Route::post('/our-client/partners/{partner}',                      [PartnerSectionController::class, 'updatePartner'])->name('ourclient.partners.update');
+            Route::patch('/our-client/partners/{partner}/status',              [PartnerSectionController::class, 'togglePartnerStatus'])->name('ourclient.partners.toggleStatus');
+            Route::delete('/our-client/partners/{partner}',                    [PartnerSectionController::class, 'destroyPartner'])->name('ourclient.partners.destroy');
+            Route::post('/our-client/partners/{id}/restore',                   [PartnerSectionController::class, 'restorePartner'])->name('ourclient.partners.restore');
 
-            Route::get('/our-client',  fn() => view('pages.admin.sections.home.ourclient'))->name('ourclient');
-            Route::get('/testimonial', fn() => view('pages.admin.sections.home.testimonial'))->name('testimonial');
-            Route::get('/faq',         fn() => view('pages.admin.sections.home.faq'))->name('faq');
-            Route::get('/cta',         fn() => view('pages.admin.sections.home.cta'))->name('cta');
+            // Testimonials Section — full CRUD
+            Route::get('/testimonial',                                         [TestimonialSectionController::class, 'index'])->name('testimonial');
+            Route::post('/testimonial/settings',                               [TestimonialSectionController::class, 'updateSettings'])->name('testimonial.settings.update');
+            Route::post('/testimonial/items',                                  [TestimonialSectionController::class, 'storeTestimonial'])->name('testimonial.items.store');
+            Route::post('/testimonial/items/sort',                             [TestimonialSectionController::class, 'sortTestimonials'])->name('testimonial.items.sort');
+            Route::post('/testimonial/items/{testimonial}',                    [TestimonialSectionController::class, 'updateTestimonial'])->name('testimonial.items.update');
+            Route::patch('/testimonial/items/{testimonial}/status',            [TestimonialSectionController::class, 'toggleTestimonialStatus'])->name('testimonial.items.toggleStatus');
+            Route::delete('/testimonial/items/{testimonial}',                  [TestimonialSectionController::class, 'destroyTestimonial'])->name('testimonial.items.destroy');
+            Route::post('/testimonial/items/{id}/restore',                     [TestimonialSectionController::class, 'restoreTestimonial'])->name('testimonial.items.restore');
+
+            // Remaining stubs
+            Route::get('/faq', fn() => view('pages.admin.sections.home.faq'))->name('faq');
+            Route::get('/cta', fn() => view('pages.admin.sections.home.cta'))->name('cta');
         });
 
         // About Us page sections
