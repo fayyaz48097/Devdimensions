@@ -7,7 +7,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
 use App\Http\Controllers\Admin\MarqueeItemController;
 use App\Http\Controllers\Admin\FindTalentStepController;
+use App\Http\Controllers\Admin\HireSectionController;
 use App\Http\Controllers\Admin\PortfolioProjectController;
+use App\Http\Controllers\Admin\ProcessSectionController;
 use App\Http\Controllers\Admin\WelcomeSectionController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
@@ -122,8 +124,26 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/portfolio/{portfolioProject}/status',        [PortfolioProjectController::class, 'toggleStatus'])->name('portfolio.toggleStatus');
             Route::delete('/portfolio/{portfolioProject}',              [PortfolioProjectController::class, 'destroy'])->name('portfolio.destroy');
             Route::post('/portfolio/{id}/restore',                      [PortfolioProjectController::class, 'restore'])->name('portfolio.restore');
-            Route::get('/our-process', fn() => view('pages.admin.sections.home.ourprocess'))->name('ourprocess');
-            Route::get('/hire-us',     fn() => view('pages.admin.sections.home.hireus'))->name('hireus');
+            Route::get('/ourprocess',                                          [ProcessSectionController::class, 'index'])->name('ourprocess');
+            Route::post('/ourprocess/settings',                                 [ProcessSectionController::class, 'updateSettings'])->name('ourprocess.settings.update');
+            Route::post('/ourprocess/steps',                                    [ProcessSectionController::class, 'storeStep'])->name('ourprocess.steps.store');
+            Route::post('/ourprocess/steps/sort',                               [ProcessSectionController::class, 'sortSteps'])->name('ourprocess.steps.sort');
+            Route::post('/ourprocess/steps/{processStep}',                      [ProcessSectionController::class, 'updateStep'])->name('ourprocess.steps.update');
+            Route::patch('/ourprocess/steps/{processStep}/status',               [ProcessSectionController::class, 'toggleStepStatus'])->name('ourprocess.steps.toggleStatus');
+            Route::delete('/ourprocess/steps/{processStep}',                      [ProcessSectionController::class, 'destroyStep'])->name('ourprocess.steps.destroy');
+            Route::post('/ourprocess/steps/{id}/restore',                       [ProcessSectionController::class, 'restoreStep'])->name('ourprocess.steps.restore');
+
+
+            Route::get('/hireus',                                              [HireSectionController::class, 'index'])->name('hireus');
+            Route::post('/hireus/settings',                                     [HireSectionController::class, 'updateSettings'])->name('hireus.settings.update');
+            Route::post('/hireus/boxes',                                        [HireSectionController::class, 'storeBox'])->name('hireus.boxes.store');
+            Route::post('/hireus/boxes/sort',                                   [HireSectionController::class, 'sortBoxes'])->name('hireus.boxes.sort');
+            Route::post('/hireus/boxes/{hireBox}',                              [HireSectionController::class, 'updateBox'])->name('hireus.boxes.update');
+            Route::patch('/hireus/boxes/{hireBox}/status',                       [HireSectionController::class, 'toggleBoxStatus'])->name('hireus.boxes.toggleStatus');
+            Route::delete('/hireus/boxes/{hireBox}',                              [HireSectionController::class, 'destroyBox'])->name('hireus.boxes.destroy');
+            Route::post('/hireus/boxes/{id}/restore',                           [HireSectionController::class, 'restoreBox'])->name('hireus.boxes.restore');
+
+
             Route::get('/our-client',  fn() => view('pages.admin.sections.home.ourclient'))->name('ourclient');
             Route::get('/testimonial', fn() => view('pages.admin.sections.home.testimonial'))->name('testimonial');
             Route::get('/faq',         fn() => view('pages.admin.sections.home.faq'))->name('faq');

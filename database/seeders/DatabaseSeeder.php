@@ -17,7 +17,10 @@ class DatabaseSeeder extends Seeder
             MarqueeItemSeeder::class,
             FindTalentStepSeeder::class,
             WelcomeSectionSeeder::class,
-            PortfolioProjectSeeder::class
+            PortfolioProjectSeeder::class,
+            AdminSeeder::class,
+            ProcessSectionSeeder::class,   // ← ADD
+            HireSectionSeeder::class,
         ]);
     }
 }
