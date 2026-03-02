@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             HireSectionSeeder::class,
             PartnerSeeder::class,
             TestimonialSeeder::class,
+            CtaSeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

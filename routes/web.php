@@ -8,7 +8,9 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
+use App\Http\Controllers\Admin\CtaSectionController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqSectionController;
 use App\Http\Controllers\Admin\FindTalentStepController;
 use App\Http\Controllers\Admin\HireSectionController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
@@ -171,9 +173,17 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::delete('/testimonial/items/{testimonial}',                  [TestimonialSectionController::class, 'destroyTestimonial'])->name('testimonial.items.destroy');
             Route::post('/testimonial/items/{id}/restore',                     [TestimonialSectionController::class, 'restoreTestimonial'])->name('testimonial.items.restore');
 
-            // Remaining stubs
-            Route::get('/faq', fn() => view('pages.admin.sections.home.faq'))->name('faq');
-            Route::get('/cta', fn() => view('pages.admin.sections.home.cta'))->name('cta');
+            Route::get('/faq',                                    [FaqSectionController::class, 'index'])->name('faq');
+            Route::post('/faq/settings',                          [FaqSectionController::class, 'updateSettings'])->name('faq.settings.update');
+            Route::post('/faq/items',                             [FaqSectionController::class, 'storeFaqItem'])->name('faq.items.store');
+            Route::post('/faq/items/sort',                        [FaqSectionController::class, 'sortFaqItems'])->name('faq.items.sort');
+            Route::post('/faq/items/{faqItem}',                   [FaqSectionController::class, 'updateFaqItem'])->name('faq.items.update');
+            Route::patch('/faq/items/{faqItem}/status',           [FaqSectionController::class, 'toggleFaqItemStatus'])->name('faq.items.toggleStatus');
+            Route::delete('/faq/items/{faqItem}',                 [FaqSectionController::class, 'destroyFaqItem'])->name('faq.items.destroy');
+            Route::post('/faq/items/{id}/restore',                [FaqSectionController::class, 'restoreFaqItem'])->name('faq.items.restore');
+
+            Route::get('/cta',                                    [CtaSectionController::class, 'index'])->name('cta');
+            Route::post('/cta/settings',                          [CtaSectionController::class, 'updateSettings'])->name('cta.settings.update');
         });
 
         // About Us page sections
