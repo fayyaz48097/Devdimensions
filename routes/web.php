@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HomeHeroSectionController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
@@ -61,7 +62,16 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
 
         // Home page sections
         Route::prefix('home')->name('home.')->group(function () {
-            Route::get('/hero',        fn() => view('pages.admin.sections.home.hero'))->name('hero');
+
+            // Hero Section — full CRUD
+            Route::get('/hero',                            [HomeHeroSectionController::class, 'edit'])->name('hero');
+            Route::post('/hero',                           [HomeHeroSectionController::class, 'store'])->name('hero.store');
+            Route::post('/hero/{homeHeroSection}',         [HomeHeroSectionController::class, 'update'])->name('hero.update');
+            Route::patch('/hero/{homeHeroSection}/status', [HomeHeroSectionController::class, 'toggleStatus'])->name('hero.toggleStatus');
+            Route::delete('/hero/{homeHeroSection}',       [HomeHeroSectionController::class, 'destroy'])->name('hero.destroy');
+            Route::post('/hero/{id}/restore',              [HomeHeroSectionController::class, 'restore'])->name('hero.restore');
+
+            // Remaining section stubs (blade-only for now)
             Route::get('/marquee',     fn() => view('pages.admin.sections.home.marquee'))->name('marquee');
             Route::get('/find-talent', fn() => view('pages.admin.sections.home.findtalent'))->name('findtalent');
             Route::get('/welcome',     fn() => view('pages.admin.sections.home.welcome'))->name('welcome');
