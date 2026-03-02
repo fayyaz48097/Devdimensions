@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ConsultationController as AdminConsultationContro
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
+use App\Http\Controllers\Admin\MarqueeItemController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
@@ -72,7 +73,14 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::post('/hero/{id}/restore',              [HomeHeroSectionController::class, 'restore'])->name('hero.restore');
 
             // Remaining section stubs (blade-only for now)
-            Route::get('/marquee',     fn() => view('pages.admin.sections.home.marquee'))->name('marquee');
+            // Marquee Section — full CRUD
+            Route::get('/marquee',                             [MarqueeItemController::class, 'index'])->name('marquee');
+            Route::post('/marquee',                            [MarqueeItemController::class, 'store'])->name('marquee.store');
+            Route::post('/marquee/{marqueeItem}',              [MarqueeItemController::class, 'update'])->name('marquee.update');
+            Route::patch('/marquee/{marqueeItem}/status',      [MarqueeItemController::class, 'toggleStatus'])->name('marquee.toggleStatus');
+            Route::delete('/marquee/{marqueeItem}',            [MarqueeItemController::class, 'destroy'])->name('marquee.destroy');
+            Route::post('/marquee/{id}/restore',               [MarqueeItemController::class, 'restore'])->name('marquee.restore');
+            Route::post('/marquee/sort',                       [MarqueeItemController::class, 'sort'])->name('marquee.sort');
             Route::get('/find-talent', fn() => view('pages.admin.sections.home.findtalent'))->name('findtalent');
             Route::get('/welcome',     fn() => view('pages.admin.sections.home.welcome'))->name('welcome');
             Route::get('/portfolio',   fn() => view('pages.admin.sections.home.portfolio'))->name('portfolio');
