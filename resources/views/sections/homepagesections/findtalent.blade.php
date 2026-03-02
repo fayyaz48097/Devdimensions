@@ -1,17 +1,25 @@
+{{--
+    SAVE AS: resources/views/sections/homepagesections/findtalent.blade.php
+
+    Dynamic Find Talent section.
+    • Only the 5 steps (icons, labels, tooltips) come from the DB.
+    • Background diagram images and static headings remain as-is.
+    • Section hides entirely if no active steps exist.
+    • Up to 5 active steps fill CSS slots s-1 through s-5 in sort_order.
+--}}
+
+@php
+    use App\Models\FindTalentStep;
+    $steps = FindTalentStep::published()->orderBy('sort_order')->take(5)->get();
+@endphp
+
 @push('styles')
     <style>
-        /* ════════════════════════════════════════════
-                                                       PROBLEMS SECTION — mirrors original CSS
-                                                       Using Tailwind where possible, custom for
-                                                       the complex positioned diagram layout
-                                                    ════════════════════════════════════════════ */
-
         section.problems {
             margin-top: 100px;
             overflow: hidden;
         }
 
-        /* ── problems-holder: the diagram container ── */
         .problems-holder {
             position: relative;
             width: 100%;
@@ -19,7 +27,6 @@
             margin-top: 50px;
         }
 
-        /* Path image — full width background of the diagram */
         .problems-holder .path {
             display: block;
             width: 100%;
@@ -30,12 +37,10 @@
             display: none;
         }
 
-        /* ── Start: "Your Company" ── */
         .problems-holder .start {
             position: absolute;
             left: 40px;
             top: 56%;
-
             font-size: 48px;
             line-height: normal;
             letter-spacing: -0.96px;
@@ -44,24 +49,19 @@
             transform: translateY(-50%);
         }
 
-        /* ── End: "Before DD" logo ── */
         .problems-holder .end {
             position: absolute;
             right: -121px;
             top: 34%;
-
         }
 
-        /* ── Steps container ── */
         .steps .step {
             position: absolute;
             width: fit-content;
             cursor: default;
         }
 
-        /* Step title styling — matches original exactly */
         .steps .title {
-
             font-weight: 400;
             font-size: 24px;
             position: relative;
@@ -73,7 +73,6 @@
         }
 
         .steps .title strong {
-
             font-weight: 600;
         }
 
@@ -84,12 +83,10 @@
             top: 3px;
         }
 
-        /* ── Tooltip — exact original CSS ── */
         .steps .toltip {
             letter-spacing: 0.14px;
             font-size: 14px;
             font-weight: 500;
-
             width: 220px;
             border-radius: 20px;
             padding: 13px 24px;
@@ -106,7 +103,6 @@
             pointer-events: none;
         }
 
-        /* Tooltip triangle — matches original try-angle image style */
         .steps .toltip::after {
             content: "";
             position: absolute;
@@ -120,13 +116,12 @@
             z-index: -1;
         }
 
-        /* Active step — tooltip visible (exact original) */
         .steps .step.active .toltip {
             opacity: 1;
             visibility: visible;
         }
 
-        /* ── Step positions — exact from original CSS ── */
+        /* Fixed CSS positions — s-1 through s-5 */
         .steps .s-1 {
             top: 12%;
             left: 22%;
@@ -152,7 +147,6 @@
             top: 23%;
         }
 
-        /* ── Mobile ── */
         .mob__none {
             display: block;
         }
@@ -177,141 +171,82 @@
     </style>
 @endpush
 
+@if ($steps->isNotEmpty())
+    <section class="problems _oh w-full py-[50px] relative clear-both">
+        <div
+            class="w-full px-3 mx-auto
+                sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px]
+                xl:max-w-[1140px] 2xl:max-w-[1320px]">
 
-{{-- ══════════════════════════════════════════════════════
-     SECTION: Finding All-Star Talent is Hard
-══════════════════════════════════════════════════════ --}}
-<section class="problems _oh w-full py-[50px] relative clear-both">
-
-    {{-- Container — matches Bootstrap responsive container widths --}}
-    <div
-        class="w-full px-3 mx-auto
-                sm:max-w-[540px]
-                md:max-w-[720px]
-                lg:max-w-[960px]
-                xl:max-w-[1140px]
-                2xl:max-w-[1320px]">
-
-        {{-- ── Heading ── --}}
-        <div class="mx-auto text-center" style="max-width: 926px; width: 100%;">
-            <h2 class="text-[28px] md:text-[48px] "
-                style="
-                  font-weight: 500;
-              
-                line-height: normal;
-                letter-spacing: -0.96px;
-                margin-bottom: 20px;
-                color: #fff;
-            ">
-                Finding All-Star Talent is hard
-            </h2>
-            <p style="font-size:16px; line-height:1.5; color:#BBB; margin-bottom:20px;">
-                Navigating job posts? Brace for an inbox flood of mismatched candidates. Survive
-                interviews, onboarding, and training only to grapple with subpar work and
-                communication gaps. Frustration isn't the goal and you can do better.
-            </p>
-        </div>
-
-        {{-- ── Desktop diagram ── --}}
-        <div class="mob__none">
-            <div class="problems-holder">
-
-                {{-- Mobile path (hidden on desktop via CSS) --}}
-                <img src="{{ asset('assets/images/Group-39236.png') }}" alt="mobile path" class="mobile-path">
-
-                {{-- Winding dashed path — the background image of the diagram --}}
-                <img src="{{ asset('assets/images/path-line.png') }}" alt="path line" class="path">
-
-                {{-- START: Your Company --}}
-                <h2 class="start">Your<br>Company</h2>
-
-                {{-- END: Before DD --}}
-                <img src="{{ asset('assets/images/Frame-1261153171.svg') }}" alt="Before DevDimensions" class="end">
-
-                {{-- ── Steps ── --}}
-                <div class="steps">
-
-                    {{-- Step 1 --}}
-                    <div class="step s-1">
-                        <h5 class="title">
-                            <img src="{{ asset('assets/images/engineer.svg') }}" class="icon" alt="engineer">
-                            <strong>Exhausting</strong><br>Interviews
-                        </h5>
-                        <div class="toltip">
-                            30+ interviews for every 1 job slot
-                        </div>
-                    </div>
-
-                    {{-- Step 2 --}}
-                    <div class="step s-2">
-                        <h5 class="title">
-                            <img src="{{ asset('assets/images/clarity_talk-bubbles-line.svg') }}" class="icon"
-                                alt="communication">
-                            Communication<br><strong>Gaps</strong>
-                        </h5>
-                        <div class="toltip">
-                            Communication across time zones is slow, unclear, &amp; difficult
-                        </div>
-                    </div>
-
-                    {{-- Step 3 --}}
-                    <div class="step s-3">
-                        <h5 class="title">
-                            <img src="{{ asset('assets/images/like-shapes.svg') }}" class="icon" alt="quality">
-                            <strong>Quality</strong><br>Issues
-                        </h5>
-                        <div class="toltip">
-                            Quality isn't worth money/time spent
-                        </div>
-                    </div>
-
-                    {{-- Step 4 --}}
-                    <div class="step s-4">
-                        <h5 class="title">
-                            <img src="{{ asset('assets/images/uim_process.svg') }}" class="icon" alt="systems">
-                            <strong>Minimal</strong><br>Systems
-                        </h5>
-                        <div class="toltip">
-                            Minimal consistency across projects without systems
-                        </div>
-                    </div>
-
-                    {{-- Step 5 --}}
-                    <div class="step s-5">
-                        <h5 class="title">
-                            <img src="{{ asset('assets/images/fluent_clock-28-regular.svg') }}" class="icon"
-                                alt="timeline">
-                            <strong>Timeline</strong><br>Constraints
-                        </h5>
-                        <div class="toltip">
-                            No guarantee on project timeline or completion
-                        </div>
-                    </div>
-
-                </div>{{-- /steps --}}
-
+            {{-- Heading — static --}}
+            <div class="mx-auto text-center" style="max-width:926px; width:100%;">
+                <h2 class="text-[28px] md:text-[48px]"
+                    style="font-weight:500; line-height:normal; letter-spacing:-0.96px; margin-bottom:20px; color:#fff;">
+                    Finding All-Star Talent is hard
+                </h2>
+                <p style="font-size:16px; line-height:1.5; color:#BBB; margin-bottom:20px;">
+                    Navigating job posts? Brace for an inbox flood of mismatched candidates. Survive
+                    interviews, onboarding, and training only to grapple with subpar work and
+                    communication gaps. Frustration isn't the goal and you can do better.
+                </p>
             </div>
-        </div>{{-- /mob__none --}}
 
-        {{-- ── Mobile fallback image ── --}}
-        <div class="core__mob">
-            <img src="{{ asset('assets/images/Group-39236.png') }}" alt="Finding talent is hard" class="w-full h-auto">
+            {{-- Desktop diagram --}}
+            <div class="mob__none">
+                <div class="problems-holder">
+
+                    <img src="{{ asset('assets/images/Group-39236.png') }}" alt="mobile path" class="mobile-path">
+                    <img src="{{ asset('assets/images/path-line.png') }}" alt="path line" class="path">
+
+                    <h2 class="start">Your<br>Company</h2>
+                    <img src="{{ asset('assets/images/Frame-1261153171.svg') }}" alt="Before DevDimensions"
+                        class="end">
+
+                    <div class="steps">
+                        @foreach ($steps as $i => $step)
+                            @php
+                                $slotClass = 's-' . ($i + 1);
+                                $lines = $step->titleLines();
+                                $iconSrc = $step->iconUrl();
+                            @endphp
+                            <div class="step {{ $slotClass }}">
+                                <h5 class="title">
+                                    @if ($iconSrc)
+                                        <img src="{{ $iconSrc }}" class="icon" alt="{{ $step->title_plain }}">
+                                    @endif
+                                    @if ($lines[0]['bold'])
+                                        <strong>{{ $lines[0]['text'] }}</strong>
+                                    @else
+                                        {{ $lines[0]['text'] }}
+                                    @endif
+                                    <br>
+                                    @if ($lines[1]['bold'])
+                                        <strong>{{ $lines[1]['text'] }}</strong>
+                                    @else
+                                        {{ $lines[1]['text'] }}
+                                    @endif
+                                </h5>
+                                <div class="toltip">{{ $step->tooltip_text }}</div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- Mobile fallback — static image --}}
+            <div class="core__mob">
+                <img src="{{ asset('assets/images/Group-39236.png') }}" alt="Finding talent is hard"
+                    class="w-full h-auto">
+            </div>
+
         </div>
-
-    </div>
-</section>
-
+    </section>
+@endif
 
 @push('scripts')
     <script>
         (function() {
-            /**
-             * Auto-cycle tooltips across the 5 problem steps.
-             *
-             * - Each step's tooltip shows for 1800ms then advances to the next.
-             * - Hovering a step immediately makes it active and PAUSES the cycle.
-             * - Leaving resumes from the current position.
-             */
             var steps = Array.from(document.querySelectorAll('.problems .steps .step'));
             if (!steps.length) return;
 
@@ -349,7 +284,6 @@
                 });
             });
 
-            // Begin on step 1
             setActive(0);
             startCycle();
         })();

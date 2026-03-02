@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             // ── Content seeders ──
             MarqueeItemSeeder::class,
+            FindTalentStepSeeder::class,
         ]);
     }
 }

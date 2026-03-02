@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
 use App\Http\Controllers\Admin\MarqueeItemController;
+use App\Http\Controllers\Admin\FindTalentStepController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
@@ -81,7 +82,15 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::delete('/marquee/{marqueeItem}',            [MarqueeItemController::class, 'destroy'])->name('marquee.destroy');
             Route::post('/marquee/{id}/restore',               [MarqueeItemController::class, 'restore'])->name('marquee.restore');
             Route::post('/marquee/sort',                       [MarqueeItemController::class, 'sort'])->name('marquee.sort');
-            Route::get('/find-talent', fn() => view('pages.admin.sections.home.findtalent'))->name('findtalent');
+            // Find Talent Section — full CRUD
+            // NOTE: static segments (sort) MUST come before wildcard ({findTalentStep}) routes
+            Route::get('/find-talent',                                [FindTalentStepController::class, 'index'])->name('findtalent');
+            Route::post('/find-talent',                               [FindTalentStepController::class, 'store'])->name('findtalent.store');
+            Route::post('/find-talent/sort',                          [FindTalentStepController::class, 'sort'])->name('findtalent.sort');
+            Route::post('/find-talent/{findTalentStep}',              [FindTalentStepController::class, 'update'])->name('findtalent.update');
+            Route::patch('/find-talent/{findTalentStep}/status',      [FindTalentStepController::class, 'toggleStatus'])->name('findtalent.toggleStatus');
+            Route::delete('/find-talent/{findTalentStep}',            [FindTalentStepController::class, 'destroy'])->name('findtalent.destroy');
+            Route::post('/find-talent/{id}/restore',                  [FindTalentStepController::class, 'restore'])->name('findtalent.restore');
             Route::get('/welcome',     fn() => view('pages.admin.sections.home.welcome'))->name('welcome');
             Route::get('/portfolio',   fn() => view('pages.admin.sections.home.portfolio'))->name('portfolio');
             Route::get('/our-process', fn() => view('pages.admin.sections.home.ourprocess'))->name('ourprocess');
