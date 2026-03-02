@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
 use App\Http\Controllers\Admin\MarqueeItemController;
 use App\Http\Controllers\Admin\FindTalentStepController;
+use App\Http\Controllers\Admin\WelcomeSectionController;
 use App\Http\Controllers\ConsultationController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Middleware\EnsureAdminAuthenticated;
@@ -91,7 +92,28 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/find-talent/{findTalentStep}/status',      [FindTalentStepController::class, 'toggleStatus'])->name('findtalent.toggleStatus');
             Route::delete('/find-talent/{findTalentStep}',            [FindTalentStepController::class, 'destroy'])->name('findtalent.destroy');
             Route::post('/find-talent/{id}/restore',                  [FindTalentStepController::class, 'restore'])->name('findtalent.restore');
-            Route::get('/welcome',     fn() => view('pages.admin.sections.home.welcome'))->name('welcome');
+            // Welcome Section — full CRUD (singleton + slider lines + slider items)
+            // NOTE: all static sub-segments (sort) MUST come before wildcard routes
+            Route::get('/welcome',                                                            [WelcomeSectionController::class, 'index'])->name('welcome');
+            Route::post('/welcome',                                                           [WelcomeSectionController::class, 'store'])->name('welcome.store');
+            Route::put('/welcome/{welcomeSection}',                                           [WelcomeSectionController::class, 'update'])->name('welcome.update');
+            Route::patch('/welcome/{welcomeSection}/status',                                  [WelcomeSectionController::class, 'toggleStatus'])->name('welcome.toggleStatus');
+            Route::delete('/welcome/{welcomeSection}',                                        [WelcomeSectionController::class, 'destroy'])->name('welcome.destroy');
+            Route::post('/welcome/{id}/restore',                                              [WelcomeSectionController::class, 'restore'])->name('welcome.restore');
+            // Lines
+            Route::post('/welcome/{welcomeSection}/lines/sort',                               [WelcomeSectionController::class, 'sortLines'])->name('welcome.lines.sort');
+            Route::post('/welcome/{welcomeSection}/lines',                                    [WelcomeSectionController::class, 'storeLine'])->name('welcome.lines.store');
+            Route::put('/welcome/{welcomeSection}/lines/{line}',                              [WelcomeSectionController::class, 'updateLine'])->name('welcome.lines.update');
+            Route::patch('/welcome/{welcomeSection}/lines/{line}/status',                     [WelcomeSectionController::class, 'toggleLineStatus'])->name('welcome.lines.toggleStatus');
+            Route::delete('/welcome/{welcomeSection}/lines/{line}',                           [WelcomeSectionController::class, 'destroyLine'])->name('welcome.lines.destroy');
+            Route::post('/welcome/{sectionId}/lines/{lineId}/restore',                        [WelcomeSectionController::class, 'restoreLine'])->name('welcome.lines.restore');
+            // Items
+            Route::post('/welcome/{welcomeSection}/lines/{line}/items/sort',                  [WelcomeSectionController::class, 'sortItems'])->name('welcome.items.sort');
+            Route::post('/welcome/{welcomeSection}/lines/{line}/items',                       [WelcomeSectionController::class, 'storeItem'])->name('welcome.items.store');
+            Route::put('/welcome/{welcomeSection}/lines/{line}/items/{item}',                 [WelcomeSectionController::class, 'updateItem'])->name('welcome.items.update');
+            Route::patch('/welcome/{welcomeSection}/lines/{line}/items/{item}/status',        [WelcomeSectionController::class, 'toggleItemStatus'])->name('welcome.items.toggleStatus');
+            Route::delete('/welcome/{welcomeSection}/lines/{line}/items/{item}',              [WelcomeSectionController::class, 'destroyItem'])->name('welcome.items.destroy');
+            Route::post('/welcome/{sectionId}/lines/{lineId}/items/{itemId}/restore',         [WelcomeSectionController::class, 'restoreItem'])->name('welcome.items.restore');
             Route::get('/portfolio',   fn() => view('pages.admin.sections.home.portfolio'))->name('portfolio');
             Route::get('/our-process', fn() => view('pages.admin.sections.home.ourprocess'))->name('ourprocess');
             Route::get('/hire-us',     fn() => view('pages.admin.sections.home.hireus'))->name('hireus');
