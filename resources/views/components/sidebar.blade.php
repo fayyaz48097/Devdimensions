@@ -85,7 +85,7 @@
         padding: 18px 16px 6px;
     }
 
-    /* ── Sub-nav (accordion) ── */
+    /* ── Sub-nav level 1 (accordion) ── */
     .sub-nav {
         overflow: hidden;
         max-height: 0;
@@ -93,7 +93,7 @@
     }
 
     .sub-nav.is-open {
-        max-height: 400px;
+        max-height: 1000px;
     }
 
     .sub-nav-item {
@@ -108,6 +108,10 @@
         text-decoration: none;
         border-radius: 6px;
         position: relative;
+        border: none;
+        background: transparent;
+        width: 100%;
+        text-align: left;
     }
 
     .sub-nav-item::before {
@@ -131,6 +135,70 @@
     .sub-nav-item.is-active::before,
     .sub-nav-item:hover::before {
         background: #FC3F37;
+    }
+
+    /* ── Sub-nav level 2 (page sections) ── */
+    .sub-nav-2 {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sub-nav-2.is-open {
+        max-height: 600px;
+    }
+
+    .sub-nav-item-2 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px 6px 58px;
+        font-size: 12px;
+        color: #464646;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        text-decoration: none;
+        border-radius: 6px;
+        position: relative;
+    }
+
+    .sub-nav-item-2::before {
+        content: "";
+        position: absolute;
+        left: 44px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #252525;
+        transition: background 0.2s ease;
+    }
+
+    .sub-nav-item-2:hover,
+    .sub-nav-item-2.is-active {
+        color: #BEBEBE;
+    }
+
+    .sub-nav-item-2.is-active::before,
+    .sub-nav-item-2:hover::before {
+        background: rgba(252, 63, 55, 0.7);
+    }
+
+    /* page toggle button inherits sub-nav-item styles */
+    .sub-nav-item.has-children {
+        justify-content: flex-start;
+    }
+
+    .sub-nav-chevron {
+        margin-left: auto;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+        opacity: 0.4;
+    }
+
+    .sub-nav-item.is-open .sub-nav-chevron {
+        transform: rotate(180deg);
     }
 
     /* ── Chevron rotation ── */
@@ -246,9 +314,14 @@
         {{-- ── CONTENT ── --}}
         <p class="nav-group-label">Content</p>
 
-        {{-- Pages (with sub-menu) --}}
-        <button class="nav-item {{ request()->routeIs('admin.pages.*') ? 'is-active is-open' : '' }}"
-            data-toggle="sub-pages">
+        {{-- ════════════════════════════════
+             Pages  (level 1 accordion)
+        ════════════════════════════════ --}}
+        @php
+            $onPagesRoute = request()->routeIs('admin.pages.*') || request()->routeIs('admin.sections.*');
+        @endphp
+
+        <button class="nav-item {{ $onPagesRoute ? 'is-active is-open' : '' }}" data-toggle="sub-pages">
             <span class="nav-icon">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -265,24 +338,146 @@
                 <polyline points="6 9 12 15 18 9" />
             </svg>
         </button>
-        <div class="sub-nav {{ request()->routeIs('admin.pages.*') ? 'is-open' : '' }}" id="sub-pages">
-            <a href="{{ route('admin.pages.home') }}"
-                class="sub-nav-item {{ request()->routeIs('admin.pages.home') ? 'is-active' : '' }}">
+
+        <div class="sub-nav {{ $onPagesRoute ? 'is-open' : '' }}" id="sub-pages">
+
+            {{-- ── Home page ── --}}
+            @php $onHomeSection = request()->routeIs('admin.sections.home.*'); @endphp
+
+            <button class="sub-nav-item has-children {{ $onHomeSection ? 'is-active is-open' : '' }}"
+                data-toggle="sub-page-home">
                 Home
-            </a>
-            <a href="{{ route('admin.pages.about') }}"
-                class="sub-nav-item {{ request()->routeIs('admin.pages.about') ? 'is-active' : '' }}">
+                <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+            <div class="sub-nav-2 {{ $onHomeSection ? 'is-open' : '' }}" id="sub-page-home">
+                <a href="{{ route('admin.sections.home.hero') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.hero') ? 'is-active' : '' }}">
+                    Hero Section
+                </a>
+                <a href="{{ route('admin.sections.home.marquee') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.marquee') ? 'is-active' : '' }}">
+                    Marquee
+                </a>
+                <a href="{{ route('admin.sections.home.findtalent') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.findtalent') ? 'is-active' : '' }}">
+                    Find Talent
+                </a>
+                <a href="{{ route('admin.sections.home.welcome') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.welcome') ? 'is-active' : '' }}">
+                    Welcome Section
+                </a>
+                <a href="{{ route('admin.sections.home.portfolio') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.portfolio') ? 'is-active' : '' }}">
+                    Portfolio
+                </a>
+                <a href="{{ route('admin.sections.home.ourprocess') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.ourprocess') ? 'is-active' : '' }}">
+                    Our Process
+                </a>
+                <a href="{{ route('admin.sections.home.hireus') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.hireus') ? 'is-active' : '' }}">
+                    Hire Us
+                </a>
+                <a href="{{ route('admin.sections.home.ourclient') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.ourclient') ? 'is-active' : '' }}">
+                    Our Clients
+                </a>
+                <a href="{{ route('admin.sections.home.testimonial') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.testimonial') ? 'is-active' : '' }}">
+                    Testimonials
+                </a>
+                <a href="{{ route('admin.sections.home.faq') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.faq') ? 'is-active' : '' }}">
+                    FAQ
+                </a>
+                <a href="{{ route('admin.sections.home.cta') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.home.cta') ? 'is-active' : '' }}">
+                    CTA
+                </a>
+            </div>
+
+            {{-- ── About Us page ── --}}
+            @php $onAboutSection = request()->routeIs('admin.sections.about.*'); @endphp
+
+            <button class="sub-nav-item has-children {{ $onAboutSection ? 'is-active is-open' : '' }}"
+                data-toggle="sub-page-about">
                 About Us
-            </a>
-            <a href="{{ route('admin.pages.casestudies') }}"
-                class="sub-nav-item {{ request()->routeIs('admin.pages.casestudies') ? 'is-active' : '' }}">
+                <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+            <div class="sub-nav-2 {{ $onAboutSection ? 'is-open' : '' }}" id="sub-page-about">
+                <a href="{{ route('admin.sections.about.hero') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.hero') ? 'is-active' : '' }}">
+                    Hero Section
+                </a>
+                <a href="{{ route('admin.sections.about.whatwe') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.whatwe') ? 'is-active' : '' }}">
+                    What We Do
+                </a>
+                <a href="{{ route('admin.sections.about.corevalue') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.corevalue') ? 'is-active' : '' }}">
+                    Core Values
+                </a>
+                <a href="{{ route('admin.sections.about.joinnow') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.joinnow') ? 'is-active' : '' }}">
+                    Join Now
+                </a>
+            </div>
+
+            {{-- ── Case Studies page ── --}}
+            @php $onCaseSection = request()->routeIs('admin.sections.casestudy.*'); @endphp
+
+            <button class="sub-nav-item has-children {{ $onCaseSection ? 'is-active is-open' : '' }}"
+                data-toggle="sub-page-casestudy">
                 Case Studies
-            </a>
-            <a href="{{ route('admin.pages.contact') }}"
-                class="sub-nav-item {{ request()->routeIs('admin.pages.contact') ? 'is-active' : '' }}">
+                <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+            <div class="sub-nav-2 {{ $onCaseSection ? 'is-open' : '' }}" id="sub-page-casestudy">
+                <a href="{{ route('admin.sections.casestudy.hero') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.hero') ? 'is-active' : '' }}">
+                    Hero Section
+                </a>
+                <a href="{{ route('admin.sections.casestudy.projects') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.projects') ? 'is-active' : '' }}">
+                    Projects Section
+                </a>
+                <a href="{{ route('admin.sections.casestudy.cta') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.cta') ? 'is-active' : '' }}">
+                    CTA
+                </a>
+            </div>
+
+            {{-- ── Contact Us page ── --}}
+            @php $onContactSection = request()->routeIs('admin.sections.contact.*'); @endphp
+
+            <button class="sub-nav-item has-children {{ $onContactSection ? 'is-active is-open' : '' }}"
+                data-toggle="sub-page-contact">
                 Contact Us
-            </a>
-        </div>
+                <svg class="sub-nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="6 9 12 15 18 9" />
+                </svg>
+            </button>
+            <div class="sub-nav-2 {{ $onContactSection ? 'is-open' : '' }}" id="sub-page-contact">
+                <a href="{{ route('admin.sections.contact.contactus') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.contact.contactus') ? 'is-active' : '' }}">
+                    Contact Section
+                </a>
+                <a href="{{ route('admin.sections.contact.cta') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.contact.cta') ? 'is-active' : '' }}">
+                    CTA
+                </a>
+            </div>
+
+        </div>{{-- end sub-pages --}}
 
         {{-- Case Studies --}}
         <button class="nav-item {{ request()->routeIs('admin.casestudies.*') ? 'is-active is-open' : '' }}"
@@ -475,24 +670,46 @@
 
 @push('scripts')
     <script>
-        // Accordion toggle for sidebar sub-menus
+        // ── Level-1 accordion (Pages, Case Studies, etc.) ──
         document.querySelectorAll('[data-toggle]').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                const target = document.getElementById(btn.getAttribute('data-toggle'));
-                const isOpen = target.classList.contains('is-open');
+                const targetId = btn.getAttribute('data-toggle');
+                const target = document.getElementById(targetId);
 
-                // Close all
-                document.querySelectorAll('.sub-nav').forEach(function(sub) {
-                    sub.classList.remove('is-open');
-                });
-                document.querySelectorAll('[data-toggle]').forEach(function(b) {
-                    b.classList.remove('is-open');
-                });
+                // Only handle level-1 toggles from .nav-item buttons
+                if (btn.classList.contains('nav-item')) {
+                    const isOpen = target.classList.contains('is-open');
 
-                // Open clicked (if it was closed)
-                if (!isOpen) {
-                    target.classList.add('is-open');
-                    btn.classList.add('is-open');
+                    document.querySelectorAll('.nav-item[data-toggle]').forEach(function(b) {
+                        b.classList.remove('is-open');
+                    });
+                    document.querySelectorAll('.nav-item[data-toggle] + .sub-nav').forEach(function(s) {
+                        s.classList.remove('is-open');
+                    });
+
+                    if (!isOpen) {
+                        target.classList.add('is-open');
+                        btn.classList.add('is-open');
+                    }
+                }
+
+                // Level-2 toggles (.sub-nav-item buttons)
+                if (btn.classList.contains('sub-nav-item')) {
+                    const isOpen = target.classList.contains('is-open');
+
+                    // Close sibling level-2 panels
+                    btn.closest('.sub-nav').querySelectorAll('.sub-nav-2').forEach(function(s) {
+                        s.classList.remove('is-open');
+                    });
+                    btn.closest('.sub-nav').querySelectorAll('.sub-nav-item.has-children').forEach(function(
+                        b) {
+                        b.classList.remove('is-open');
+                    });
+
+                    if (!isOpen) {
+                        target.classList.add('is-open');
+                        btn.classList.add('is-open');
+                    }
                 }
             });
         });

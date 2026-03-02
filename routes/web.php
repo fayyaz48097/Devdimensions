@@ -48,12 +48,52 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
     // Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Pages
+    // Pages (top-level page editors — kept for backwards compat if needed)
     Route::prefix('pages')->name('pages.')->group(function () {
         Route::get('/home',         fn() => view('pages.admin.pages.home'))->name('home');
         Route::get('/about',        fn() => view('pages.admin.pages.about'))->name('about');
         Route::get('/case-studies', fn() => view('pages.admin.pages.casestudies'))->name('casestudies');
         Route::get('/contact',      fn() => view('pages.admin.pages.contact'))->name('contact');
+    });
+
+    // ── Page Sections ──
+    Route::prefix('sections')->name('sections.')->group(function () {
+
+        // Home page sections
+        Route::prefix('home')->name('home.')->group(function () {
+            Route::get('/hero',        fn() => view('pages.admin.sections.home.hero'))->name('hero');
+            Route::get('/marquee',     fn() => view('pages.admin.sections.home.marquee'))->name('marquee');
+            Route::get('/find-talent', fn() => view('pages.admin.sections.home.findtalent'))->name('findtalent');
+            Route::get('/welcome',     fn() => view('pages.admin.sections.home.welcome'))->name('welcome');
+            Route::get('/portfolio',   fn() => view('pages.admin.sections.home.portfolio'))->name('portfolio');
+            Route::get('/our-process', fn() => view('pages.admin.sections.home.ourprocess'))->name('ourprocess');
+            Route::get('/hire-us',     fn() => view('pages.admin.sections.home.hireus'))->name('hireus');
+            Route::get('/our-client',  fn() => view('pages.admin.sections.home.ourclient'))->name('ourclient');
+            Route::get('/testimonial', fn() => view('pages.admin.sections.home.testimonial'))->name('testimonial');
+            Route::get('/faq',         fn() => view('pages.admin.sections.home.faq'))->name('faq');
+            Route::get('/cta',         fn() => view('pages.admin.sections.home.cta'))->name('cta');
+        });
+
+        // About Us page sections
+        Route::prefix('about')->name('about.')->group(function () {
+            Route::get('/hero',       fn() => view('pages.admin.sections.about.hero'))->name('hero');
+            Route::get('/what-we',    fn() => view('pages.admin.sections.about.whatwe'))->name('whatwe');
+            Route::get('/core-value', fn() => view('pages.admin.sections.about.corevalue'))->name('corevalue');
+            Route::get('/join-now',   fn() => view('pages.admin.sections.about.joinnow'))->name('joinnow');
+        });
+
+        // Case Studies page sections
+        Route::prefix('case-study')->name('casestudy.')->group(function () {
+            Route::get('/hero',     fn() => view('pages.admin.sections.casestudy.hero'))->name('hero');
+            Route::get('/projects', fn() => view('pages.admin.sections.casestudy.projects'))->name('projects');
+            Route::get('/cta',      fn() => view('pages.admin.sections.casestudy.cta'))->name('cta');
+        });
+
+        // Contact Us page sections
+        Route::prefix('contact')->name('contact.')->group(function () {
+            Route::get('/contact-us', fn() => view('pages.admin.sections.contact.contactus'))->name('contactus');
+            Route::get('/cta',        fn() => view('pages.admin.sections.contact.cta'))->name('cta');
+        });
     });
 
     // Case Studies
@@ -83,8 +123,8 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
 
     // Contact-us submissions
     Route::prefix('contacts')->name('contacts.')->group(function () {
-        Route::get('/',                [AdminContactUsController::class, 'index'])->name('index');
-        Route::get('/{contact}',       [AdminContactUsController::class, 'show'])->name('show');
+        Route::get('/',                   [AdminContactUsController::class, 'index'])->name('index');
+        Route::get('/{contact}',          [AdminContactUsController::class, 'show'])->name('show');
         Route::patch('/{contact}/status', [AdminContactUsController::class, 'updateStatus'])->name('updateStatus');
     });
 
