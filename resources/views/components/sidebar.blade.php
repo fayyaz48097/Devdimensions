@@ -449,10 +449,7 @@
                     class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.projects') ? 'is-active' : '' }}">
                     Projects Section
                 </a>
-                <a href="{{ route('admin.sections.casestudy.cta') }}"
-                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.cta') ? 'is-active' : '' }}">
-                    CTA
-                </a>
+
             </div>
 
             {{-- ── Contact Us page ── --}}
@@ -471,10 +468,7 @@
                     class="sub-nav-item-2 {{ request()->routeIs('admin.sections.contact.contactus') ? 'is-active' : '' }}">
                     Contact Section
                 </a>
-                <a href="{{ route('admin.sections.contact.cta') }}"
-                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.contact.cta') ? 'is-active' : '' }}">
-                    CTA
-                </a>
+
             </div>
 
         </div>{{-- end sub-pages --}}
