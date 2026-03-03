@@ -5,6 +5,7 @@
 //   • Replaced stub Route::get('/our-client', ...) with full CRUD routes
 //   • Replaced stub Route::get('/testimonial', ...) with full CRUD routes
 
+use App\Http\Controllers\Admin\AboutHeroSectionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
@@ -188,7 +189,12 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
 
         // About Us page sections
         Route::prefix('about')->name('about.')->group(function () {
-            Route::get('/hero',       fn() => view('pages.admin.sections.about.hero'))->name('hero');
+            Route::get('/hero',                            [AboutHeroSectionController::class, 'edit'])->name('hero');
+            Route::post('/hero',                           [AboutHeroSectionController::class, 'store'])->name('hero.store');
+            Route::post('/hero/{aboutHeroSection}',        [AboutHeroSectionController::class, 'update'])->name('hero.update');
+            Route::patch('/hero/{aboutHeroSection}/status', [AboutHeroSectionController::class, 'toggleStatus'])->name('hero.toggleStatus');
+            Route::delete('/hero/{aboutHeroSection}',      [AboutHeroSectionController::class, 'destroy'])->name('hero.destroy');
+            Route::post('/hero/{id}/restore',              [AboutHeroSectionController::class, 'restore'])->name('hero.restore');
             Route::get('/what-we',    fn() => view('pages.admin.sections.about.whatwe'))->name('whatwe');
             Route::get('/core-value', fn() => view('pages.admin.sections.about.corevalue'))->name('corevalue');
             Route::get('/join-now',   fn() => view('pages.admin.sections.about.joinnow'))->name('joinnow');
