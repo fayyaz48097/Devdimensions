@@ -5,6 +5,7 @@
 //   • Replaced stub Route::get('/our-client', ...) with full CRUD routes
 //   • Replaced stub Route::get('/testimonial', ...) with full CRUD routes
 
+use App\Http\Controllers\Admin\AboutCoreValueSectionController;
 use App\Http\Controllers\Admin\AboutHeroSectionController;
 use App\Http\Controllers\Admin\AboutMissionVisionController;
 use App\Http\Controllers\Admin\AboutWhatWeController;
@@ -206,7 +207,13 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/whatwe/{section}/status', [AboutWhatWeController::class, 'toggleStatus'])->name('whatwe.toggleStatus');
             Route::delete('/whatwe/{section}', [AboutWhatWeController::class, 'destroy'])->name('whatwe.destroy');
             Route::post('/whatwe/{id}/restore', [AboutWhatWeController::class, 'restore'])->name('whatwe.restore');
-            Route::get('/core-value', fn() => view('pages.admin.sections.about.corevalue'))->name('corevalue');
+            // Core Value Section — full CRUD
+            Route::get('/core-value',                                    [AboutCoreValueSectionController::class, 'index'])->name('corevalue');
+            Route::post('/core-value',                                   [AboutCoreValueSectionController::class, 'store'])->name('corevalue.store');
+            Route::put('/core-value/{coreValueSection}',                 [AboutCoreValueSectionController::class, 'update'])->name('corevalue.update');
+            Route::patch('/core-value/{coreValueSection}/status',        [AboutCoreValueSectionController::class, 'toggleStatus'])->name('corevalue.toggleStatus');
+            Route::delete('/core-value/{coreValueSection}',              [AboutCoreValueSectionController::class, 'destroy'])->name('corevalue.destroy');
+            Route::post('/core-value/{id}/restore',                      [AboutCoreValueSectionController::class, 'restore'])->name('corevalue.restore');
             Route::get('/join-now',   fn() => view('pages.admin.sections.about.joinnow'))->name('joinnow');
         });
 

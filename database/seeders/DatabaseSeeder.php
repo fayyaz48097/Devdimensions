@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             CtaSeeder::class,
             FaqSeeder::class,
             AboutHeroSectionSeeder::class,
-            AboutMissionVisionSeeder::class
+            AboutMissionVisionSeeder::class,
+            AboutCoreValueSectionSeeder::class,
         ]);
     }
 }
