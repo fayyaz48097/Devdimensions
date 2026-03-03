@@ -11,6 +11,8 @@ use App\Http\Controllers\admin\AboutJoinNowSectionController;
 use App\Http\Controllers\Admin\AboutMissionVisionController;
 use App\Http\Controllers\Admin\AboutWhatWeController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\CaseStudyHeroSectionController;
+use App\Http\Controllers\Admin\CaseStudyProjectController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
 use App\Http\Controllers\Admin\CtaSectionController;
@@ -227,13 +229,31 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
         });
 
 
-        
+
 
         // Case Studies page sections
+        // Case Studies page sections
         Route::prefix('case-study')->name('casestudy.')->group(function () {
-            Route::get('/hero',     fn() => view('pages.admin.sections.casestudy.hero'))->name('hero');
-            Route::get('/projects', fn() => view('pages.admin.sections.casestudy.projects'))->name('projects');
-            Route::get('/cta',      fn() => view('pages.admin.sections.casestudy.cta'))->name('cta');
+
+            // Hero Section — full CRUD
+            Route::get('/hero',                        [CaseStudyHeroSectionController::class, 'index'])->name('hero');
+            Route::post('/hero',                       [CaseStudyHeroSectionController::class, 'store'])->name('hero.store');
+            Route::put('/hero/{heroSection}',          [CaseStudyHeroSectionController::class, 'update'])->name('hero.update');
+            Route::patch('/hero/{heroSection}/status', [CaseStudyHeroSectionController::class, 'toggleStatus'])->name('hero.toggleStatus');
+            Route::delete('/hero/{heroSection}',       [CaseStudyHeroSectionController::class, 'destroy'])->name('hero.destroy');
+            Route::post('/hero/{id}/restore',          [CaseStudyHeroSectionController::class, 'restore'])->name('hero.restore');
+
+            // Projects — full CRUD
+            Route::get('/projects',                          [CaseStudyProjectController::class, 'index'])->name('projects');
+            Route::post('/projects',                         [CaseStudyProjectController::class, 'store'])->name('projects.store');
+            Route::put('/projects/{project}',                [CaseStudyProjectController::class, 'update'])->name('projects.update');
+            Route::patch('/projects/{project}/status',       [CaseStudyProjectController::class, 'toggleStatus'])->name('projects.toggleStatus');
+            Route::delete('/projects/{project}',             [CaseStudyProjectController::class, 'destroy'])->name('projects.destroy');
+            Route::post('/projects/{id}/restore',            [CaseStudyProjectController::class, 'restore'])->name('projects.restore');
+            Route::post('/projects/sort',                    [CaseStudyProjectController::class, 'sort'])->name('projects.sort');
+
+            // CTA (stub — unchanged)
+            Route::get('/cta', fn() => view('pages.admin.sections.casestudy.cta'))->name('cta');
         });
 
         // Contact Us page sections

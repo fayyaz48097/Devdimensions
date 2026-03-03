@@ -442,12 +442,12 @@
             </button>
             <div class="sub-nav-2 {{ $onCaseSection ? 'is-open' : '' }}" id="sub-page-casestudy">
                 <a href="{{ route('admin.sections.casestudy.hero') }}"
-                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.hero') ? 'is-active' : '' }}">
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.hero*') ? 'is-active' : '' }}">
                     Hero Section
                 </a>
                 <a href="{{ route('admin.sections.casestudy.projects') }}"
-                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.projects') ? 'is-active' : '' }}">
-                    Projects Section
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.casestudy.projects*') ? 'is-active' : '' }}">
+                    Projects
                 </a>
 
             </div>
