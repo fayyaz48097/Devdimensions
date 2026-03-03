@@ -6,6 +6,8 @@
 //   • Replaced stub Route::get('/testimonial', ...) with full CRUD routes
 
 use App\Http\Controllers\Admin\AboutHeroSectionController;
+use App\Http\Controllers\Admin\AboutMissionVisionController;
+use App\Http\Controllers\Admin\AboutWhatWeController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\ContactUsController as AdminContactUsController;
@@ -195,7 +197,15 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/hero/{aboutHeroSection}/status', [AboutHeroSectionController::class, 'toggleStatus'])->name('hero.toggleStatus');
             Route::delete('/hero/{aboutHeroSection}',      [AboutHeroSectionController::class, 'destroy'])->name('hero.destroy');
             Route::post('/hero/{id}/restore',              [AboutHeroSectionController::class, 'restore'])->name('hero.restore');
-            Route::get('/what-we',    fn() => view('pages.admin.sections.about.whatwe'))->name('whatwe');
+            // Mission & Vision Section — full CRUD
+
+            // What We Do (Mission & Vision)
+            Route::get('/whatwe', [AboutWhatWeController::class, 'edit'])->name('whatwe');
+            Route::post('/whatwe', [AboutWhatWeController::class, 'store'])->name('whatwe.store');
+            Route::post('/whatwe/{section}', [AboutWhatWeController::class, 'update'])->name('whatwe.update');
+            Route::patch('/whatwe/{section}/status', [AboutWhatWeController::class, 'toggleStatus'])->name('whatwe.toggleStatus');
+            Route::delete('/whatwe/{section}', [AboutWhatWeController::class, 'destroy'])->name('whatwe.destroy');
+            Route::post('/whatwe/{id}/restore', [AboutWhatWeController::class, 'restore'])->name('whatwe.restore');
             Route::get('/core-value', fn() => view('pages.admin.sections.about.corevalue'))->name('corevalue');
             Route::get('/join-now',   fn() => view('pages.admin.sections.about.joinnow'))->name('joinnow');
         });
