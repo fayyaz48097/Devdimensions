@@ -423,8 +423,8 @@
                     class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.corevalue') ? 'is-active' : '' }}">
                     Core Values
                 </a>
-                <a href="{{ route('admin.sections.about.joinnow') }}"
-                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.joinnow') ? 'is-active' : '' }}">
+                <a href="{{ route('admin.sections.about.joinnow.index') }}"
+                    class="sub-nav-item-2 {{ request()->routeIs('admin.sections.about.joinnow.*') ? 'is-active' : '' }}">
                     Join Now
                 </a>
             </div>

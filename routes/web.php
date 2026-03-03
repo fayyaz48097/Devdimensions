@@ -7,6 +7,7 @@
 
 use App\Http\Controllers\Admin\AboutCoreValueSectionController;
 use App\Http\Controllers\Admin\AboutHeroSectionController;
+use App\Http\Controllers\admin\AboutJoinNowSectionController;
 use App\Http\Controllers\Admin\AboutMissionVisionController;
 use App\Http\Controllers\Admin\AboutWhatWeController;
 use App\Http\Controllers\Admin\AuthController;
@@ -214,8 +215,19 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
             Route::patch('/core-value/{coreValueSection}/status',        [AboutCoreValueSectionController::class, 'toggleStatus'])->name('corevalue.toggleStatus');
             Route::delete('/core-value/{coreValueSection}',              [AboutCoreValueSectionController::class, 'destroy'])->name('corevalue.destroy');
             Route::post('/core-value/{id}/restore',                      [AboutCoreValueSectionController::class, 'restore'])->name('corevalue.restore');
-            Route::get('/join-now',   fn() => view('pages.admin.sections.about.joinnow'))->name('joinnow');
+
+            Route::prefix('join-now')->name('joinnow.')->group(function () {
+                Route::get('/',                                   [AboutJoinNowSectionController::class, 'index'])->name('index');
+                Route::post('/',                                  [AboutJoinNowSectionController::class, 'store'])->name('store');
+                Route::put('/{joinNowSection}',                   [AboutJoinNowSectionController::class, 'update'])->name('update');
+                Route::patch('/{joinNowSection}/status',          [AboutJoinNowSectionController::class, 'toggleStatus'])->name('toggleStatus');
+                Route::delete('/{joinNowSection}',                [AboutJoinNowSectionController::class, 'destroy'])->name('destroy');
+                Route::post('/{id}/restore',                      [AboutJoinNowSectionController::class, 'restore'])->name('restore');
+            });
         });
+
+
+        
 
         // Case Studies page sections
         Route::prefix('case-study')->name('casestudy.')->group(function () {
