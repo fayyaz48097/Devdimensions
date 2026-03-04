@@ -8,6 +8,13 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: "0.0.0.0", // Listen on all network interfaces
+        cors: true,
+        hmr: {
+            host: "192.168.105.82", // Your specific machine IP
+        },
+    },
     resolve: {
         alias: {
             "@": "/resources/js",

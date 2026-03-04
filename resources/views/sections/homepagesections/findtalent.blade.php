@@ -23,8 +23,8 @@
         .problems-holder {
             position: relative;
             width: 100%;
-            min-height: 600px;
             margin-top: 50px;
+            /* No min-height — let the path image define the height naturally */
         }
 
         .problems-holder .path {
@@ -39,9 +39,9 @@
 
         .problems-holder .start {
             position: absolute;
-            left: 40px;
+            left: 3%;
             top: 56%;
-            font-size: 48px;
+            font-size: clamp(22px, 3.5vw, 48px);
             line-height: normal;
             letter-spacing: -0.96px;
             margin-bottom: 0;
@@ -51,8 +51,19 @@
 
         .problems-holder .end {
             position: absolute;
-            right: -121px;
+            right: -8%;
             top: 34%;
+            width: 12%;
+            height: auto;
+        }
+
+        /* steps overlay sits exactly over the path image */
+        .steps {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .steps .step {
@@ -63,13 +74,14 @@
 
         .steps .title {
             font-weight: 400;
-            font-size: 24px;
+            font-size: clamp(13px, 1.7vw, 24px);
             position: relative;
-            padding-left: 35px;
+            padding-left: clamp(22px, 2.2vw, 35px);
             background-color: transparent;
             line-height: 1.3;
             color: #fff;
             margin: 0;
+            white-space: nowrap;
         }
 
         .steps .title strong {
@@ -77,7 +89,7 @@
         }
 
         .steps .title .icon {
-            width: 25px;
+            width: clamp(15px, 1.8vw, 25px);
             position: absolute;
             left: 0;
             top: 3px;
@@ -121,7 +133,7 @@
             visibility: visible;
         }
 
-        /* Fixed CSS positions — s-1 through s-5 */
+        /* Positions as % of the path image — stay on the path at any width */
         .steps .s-1 {
             top: 12%;
             left: 22%;
@@ -236,8 +248,7 @@
 
             {{-- Mobile fallback — static image --}}
             <div class="core__mob">
-                <img src="{{ asset('assets/images/Group-39236.png') }}" alt="Finding talent is hard"
-                    class="w-full h-auto">
+                <img src="{{ asset('assets/images/Group-39236.png') }}" alt="Finding talent is hard" class="w-[80%] ">
             </div>
 
         </div>

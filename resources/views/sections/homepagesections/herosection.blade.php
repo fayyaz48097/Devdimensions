@@ -16,7 +16,7 @@
 
 @if ($hero)
     {{-- Hero Section --}}
-    <section class="relative w-full md:pt-[284px] pt-[150px] md:pb-[126px]">
+    <section class="relative w-full lg:pt-[284px] pt-[150px] pb-[50px] lg:pb-[126px]">
 
         {{-- Background Hero Image --}}
         <img src="{{ $hero->bgImageUrl() ?? asset('assets/images/home-hero-1.png') }}" alt="hero background"
@@ -109,7 +109,7 @@
 
                         {{-- Mobile Image --}}
                         <img src="{{ $hero->rightImageMobileUrl() ?? asset('assets/images/Frame-1261152964-1-optimized-1.webp') }}"
-                            alt="Dream Team Mobile" class="w-full h-auto lg:hidden">
+                            alt="Dream Team Mobile" class="w-full h-auto  lg:hidden">
                     </div>
                 </div>
 
