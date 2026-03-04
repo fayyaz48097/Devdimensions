@@ -142,7 +142,7 @@
                         @endif
 
                         {{-- CTA Button ─────────────────────────────────────── --}}
-                        <a href="{{ url($hireSetting->cta_url) }}"
+                        <a href="{{ url($hireSetting->cta_url) }}" data-open-consultation
                             class="relative inline-block mt-5 text-white transition-all duration-300 ease-in-out group"
                             style="border: 0;
                                font-size: 14px;
