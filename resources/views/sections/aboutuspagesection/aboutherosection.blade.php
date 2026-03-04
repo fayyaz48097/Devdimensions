@@ -80,10 +80,10 @@
 
         @media (max-width: 767px) {
             .get-touch {
-                width: 120px;
-                height: 120px;
-                bottom: -60px;
-                right: 15%;
+                width: 150px;
+                height: 150px;
+                bottom: -8%;
+                right: 30%;
             }
         }
     </style>

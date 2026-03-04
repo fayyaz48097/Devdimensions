@@ -1014,6 +1014,35 @@
             phInput.addEventListener('blur', function() {
                 phWrap.classList.remove('focus');
             });
+
+            /* ── numbers only — strip everything except 0-9 ── */
+            phInput.setAttribute('inputmode', 'numeric');
+            phInput.setAttribute('pattern', '[0-9]*');
+
+            phInput.addEventListener('keydown', function(e) {
+                /* allow: backspace, delete, tab, escape, enter, arrow keys, home, end */
+                var allowed = [8, 9, 13, 27, 46, 37, 38, 39, 40, 35, 36];
+                if (allowed.indexOf(e.keyCode) !== -1) return;
+                /* allow Ctrl/Cmd+A, C, V, X */
+                if ((e.ctrlKey || e.metaKey) && [65, 67, 86, 88].indexOf(e.keyCode) !== -1) return;
+                /* block anything that is not a digit (0-9) */
+                if (e.key < '0' || e.key > '9') {
+                    e.preventDefault();
+                }
+            });
+
+            /* strip any non-digit that sneaks in via paste or autofill */
+            phInput.addEventListener('input', function() {
+                var cleaned = this.value.replace(/[^0-9]/g, '');
+                if (this.value !== cleaned) this.value = cleaned;
+            });
+
+            phInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var pasted = (e.clipboardData || window.clipboardData).getData('text');
+                var digitsOnly = pasted.replace(/[^0-9]/g, '');
+                document.execCommand('insertText', false, digitsOnly);
+            });
         }
 
         /* ── SUBMIT — AJAX ── */
@@ -1049,8 +1078,7 @@
             var technologies = servicesRaw ?
                 servicesRaw.split(',').map(function(s) {
                     return s.trim();
-                }).filter(Boolean) :
-                [];
+                }).filter(Boolean) : [];
 
             /* loading state */
             var submitBtn = document.getElementById('dd-submit-btn');
