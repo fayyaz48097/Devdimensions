@@ -978,9 +978,50 @@
             });
         });
 
+        /* ── per-country phone digit length ── */
+        var PHONE_LENGTHS = {
+            'us': 10,
+            'ca': 10,
+            'gb': 10,
+            'pk': 10,
+            'in': 10,
+            'au': 9,
+            'ae': 9,
+            'sa': 9,
+            'de': 11,
+            'fr': 9,
+            'nl': 9,
+            'se': 9,
+            'sg': 8,
+            'jp': 10,
+            'cn': 11,
+            'br': 11,
+            'mx': 10,
+            'ng': 10,
+            'za': 9
+        };
+
+        var currentCountryCode = 'us'; /* default matches the flag shown */
+
+        function getMaxLen() {
+            return PHONE_LENGTHS[currentCountryCode] || 15;
+        }
+
+        function updatePhonePlaceholder() {
+            if (!phInput) return;
+            var len = getMaxLen();
+            phInput.maxLength = len;
+
+            /* trim existing value if it exceeds new max */
+            if (phInput.value.length > len) {
+                phInput.value = phInput.value.slice(0, len);
+            }
+        }
+
         /* ── flag / dial dropdown ── */
         var flagBtn = document.getElementById('dd-flag-btn');
         var countryDd = document.getElementById('dd-country-dd');
+        var phInput = document.getElementById('dd-phone');
 
         if (flagBtn) {
             flagBtn.addEventListener('click', function(e) {
@@ -996,6 +1037,8 @@
                     'https://flagcdn.com/w40/' + opt.dataset.code + '.png';
                 document.getElementById('dd-dial-txt').textContent = opt.dataset.dial;
                 document.getElementById('dd-dial-val').value = opt.dataset.dial;
+                currentCountryCode = opt.dataset.code;
+                updatePhonePlaceholder();
                 countryDd.classList.remove('open');
             });
         });
@@ -1004,10 +1047,15 @@
             if (countryDd) countryDd.classList.remove('open');
         });
 
-        /* ── phone focus styling ── */
-        var phInput = document.getElementById('dd-phone');
+        /* ── phone focus styling + numbers-only + max-length ── */
         var phWrap = document.getElementById('dd-phone-wrap');
         if (phInput && phWrap) {
+            phInput.setAttribute('inputmode', 'numeric');
+            phInput.setAttribute('pattern', '[0-9]*');
+
+            /* set initial maxLength for default country (us = 10) */
+            updatePhonePlaceholder();
+
             phInput.addEventListener('focus', function() {
                 phWrap.classList.add('focus');
             });
@@ -1015,32 +1063,32 @@
                 phWrap.classList.remove('focus');
             });
 
-            /* ── numbers only — strip everything except 0-9 ── */
-            phInput.setAttribute('inputmode', 'numeric');
-            phInput.setAttribute('pattern', '[0-9]*');
-
+            /* block non-digit keys */
             phInput.addEventListener('keydown', function(e) {
-                /* allow: backspace, delete, tab, escape, enter, arrow keys, home, end */
                 var allowed = [8, 9, 13, 27, 46, 37, 38, 39, 40, 35, 36];
                 if (allowed.indexOf(e.keyCode) !== -1) return;
-                /* allow Ctrl/Cmd+A, C, V, X */
                 if ((e.ctrlKey || e.metaKey) && [65, 67, 86, 88].indexOf(e.keyCode) !== -1) return;
-                /* block anything that is not a digit (0-9) */
                 if (e.key < '0' || e.key > '9') {
+                    e.preventDefault();
+                    return;
+                }
+                /* block if already at max length */
+                if (this.value.length >= getMaxLen()) {
                     e.preventDefault();
                 }
             });
 
-            /* strip any non-digit that sneaks in via paste or autofill */
+            /* strip non-digits + enforce max length on any input (autofill etc.) */
             phInput.addEventListener('input', function() {
-                var cleaned = this.value.replace(/[^0-9]/g, '');
+                var cleaned = this.value.replace(/[^0-9]/g, '').slice(0, getMaxLen());
                 if (this.value !== cleaned) this.value = cleaned;
             });
 
+            /* digits-only paste, capped at max length */
             phInput.addEventListener('paste', function(e) {
                 e.preventDefault();
                 var pasted = (e.clipboardData || window.clipboardData).getData('text');
-                var digitsOnly = pasted.replace(/[^0-9]/g, '');
+                var digitsOnly = pasted.replace(/[^0-9]/g, '').slice(0, getMaxLen());
                 document.execCommand('insertText', false, digitsOnly);
             });
         }
