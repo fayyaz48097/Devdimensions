@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             AboutHeroSectionSeeder::class,
             AboutMissionVisionSeeder::class,
             AboutCoreValueSectionSeeder::class,
+            FooterSeeder::class,
         ]);
     }
 }

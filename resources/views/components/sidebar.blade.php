@@ -473,7 +473,20 @@
 
         </div>{{-- end sub-pages --}}
 
-
+        {{-- ── Footer ── --}}
+        <a href="{{ route('admin.footer.index') }}"
+            class="nav-item {{ request()->routeIs('admin.footer.*') ? 'is-active' : '' }}">
+            <span class="nav-icon">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="21" x2="21" y2="21" />
+                    <line x1="3" y1="3" x2="21" y2="3" />
+                    <polyline points="9 8 5 12 9 16" />
+                    <polyline points="15 8 19 12 15 16" />
+                </svg>
+            </span>
+            Footer
+        </a>
 
 
         {{-- ── LEADS ── --}}

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\CtaSectionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqSectionController;
 use App\Http\Controllers\Admin\FindTalentStepController;
+use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\HireSectionController;
 use App\Http\Controllers\Admin\HomeHeroSectionController;
 use App\Http\Controllers\Admin\MarqueeItemController;
@@ -306,6 +307,28 @@ Route::prefix('admin')->name('admin.')->middleware(EnsureAdminAuthenticated::cla
     Route::prefix('users')->name('users.')->group(function () {
         Route::get('/',       fn() => view('pages.admin.users.index'))->name('index');
         Route::get('/create', fn() => view('pages.admin.users.create'))->name('create');
+    });
+
+    // ── Footer ──
+    Route::prefix('footer')->name('footer.')->group(function () {
+        Route::get('/',                                       [FooterController::class, 'index'])->name('index');
+        Route::post('/settings',                             [FooterController::class, 'storeSettings'])->name('settings.store');
+        Route::post('/settings/{footerSetting}',             [FooterController::class, 'updateSettings'])->name('settings.update');
+        Route::patch('/settings/{footerSetting}/status',     [FooterController::class, 'toggleStatus'])->name('toggleStatus');
+        Route::delete('/settings/{footerSetting}',           [FooterController::class, 'destroySettings'])->name('settings.destroy');
+        Route::post('/settings/{id}/restore',                [FooterController::class, 'restoreSettings'])->name('settings.restore');
+        Route::post('/offices',                              [FooterController::class, 'storeOffice'])->name('offices.store');
+        Route::post('/offices/sort',                         [FooterController::class, 'sortOffices'])->name('offices.sort');
+        Route::post('/offices/{footerOffice}',               [FooterController::class, 'updateOffice'])->name('offices.update');
+        Route::patch('/offices/{footerOffice}/status',       [FooterController::class, 'toggleOffice'])->name('offices.toggleStatus');
+        Route::delete('/offices/{footerOffice}',             [FooterController::class, 'destroyOffice'])->name('offices.destroy');
+        Route::post('/offices/{id}/restore',                 [FooterController::class, 'restoreOffice'])->name('offices.restore');
+        Route::post('/socials',                              [FooterController::class, 'storeSocial'])->name('socials.store');
+        Route::post('/socials/sort',                         [FooterController::class, 'sortSocials'])->name('socials.sort');
+        Route::post('/socials/{footerSocialLink}',           [FooterController::class, 'updateSocial'])->name('socials.update');
+        Route::patch('/socials/{footerSocialLink}/status',   [FooterController::class, 'toggleSocial'])->name('socials.toggleStatus');
+        Route::delete('/socials/{footerSocialLink}',         [FooterController::class, 'destroySocial'])->name('socials.destroy');
+        Route::post('/socials/{id}/restore',                 [FooterController::class, 'restoreSocial'])->name('socials.restore');
     });
 
     // Profile
