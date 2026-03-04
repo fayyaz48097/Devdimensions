@@ -25,7 +25,7 @@
 
 @if ($procSetting->isActive() && $procSteps->isNotEmpty())
 
-    <section class="relative w-full process-section" style="padding: 80px 0 0 0; overflow: visible;">
+    <section class="relative w-full process-section" style="padding: 80px 0 0 0; overflow: hidden;">
 
         {{-- ── Radial red glow ── --}}
         <div class="absolute inset-0 pointer-events-none" style="z-index:0; overflow:hidden;">
@@ -57,7 +57,7 @@
          DESKTOP (lg+) — SVG arc + positioned content boxes
     ═══════════════════════════════════════════════════ --}}
         <div class="relative hidden mx-auto lg:block"
-            style="max-width:1280px; z-index:2; overflow:visible; aspect-ratio: 1280/760;">
+            style="max-width:1280px; z-index:2; overflow:hidden; aspect-ratio: 1280/760;">
 
             {{-- SVG: arc + teal number circles ──────────────────────── --}}
             <svg class="absolute inset-0 w-full h-full" viewBox="0 0 1280 760" preserveAspectRatio="xMidYMid meet"
@@ -66,16 +66,23 @@
                 <defs>
                     <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#3A0000" stop-opacity="0" />
-                        <stop offset="12%" stop-color="#8B1000" stop-opacity="0.6" />
-                        <stop offset="40%" stop-color="#BB1E00" stop-opacity="0.95" />
-                        <stop offset="60%" stop-color="#BB1E00" stop-opacity="0.95" />
-                        <stop offset="88%" stop-color="#8B1000" stop-opacity="0.6" />
+                        <stop offset="8%" stop-color="#8B1000" stop-opacity="0.5" />
+                        <stop offset="22%" stop-color="#BB1E00" stop-opacity="0.95" />
+                        <stop offset="50%" stop-color="#BB1E00" stop-opacity="0.95" />
+                        <stop offset="78%" stop-color="#BB1E00" stop-opacity="0.95" />
+                        <stop offset="92%" stop-color="#8B1000" stop-opacity="0.5" />
                         <stop offset="100%" stop-color="#3A0000" stop-opacity="0" />
                     </linearGradient>
+
+                    {{-- Clip so the arc never renders outside the viewBox --}}
+                    <clipPath id="arcClip">
+                        <rect x="0" y="0" width="1280" height="760" />
+                    </clipPath>
                 </defs>
 
-                {{-- Arc: centre=(640,754) radius=633 --}}
-                <path d="M 7 754 A 633 633 0 0 1 1273 754" fill="none" stroke="url(#arcGrad)" stroke-width="1.5" />
+                {{-- Arc: centre=(640,754) radius=633 — clipped to viewBox --}}
+                <path d="M 7 754 A 633 633 0 0 1 1273 754" fill="none" stroke="url(#arcGrad)" stroke-width="1.5"
+                    clip-path="url(#arcClip)" />
 
                 {{-- Number circles — one per step, at fixed arc positions ── --}}
                 @foreach ($procSteps as $i => $step)
