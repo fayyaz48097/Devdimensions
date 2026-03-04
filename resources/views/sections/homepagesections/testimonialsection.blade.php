@@ -19,28 +19,63 @@
 
     <style>
         /* ── Testimonial portrait image sizing ── */
+
+        /* All screens: base image styles */
         .testi-portrait {
-            height: 220px;
-            object-position: center 20% !important;
+            display: block;
+            object-fit: cover;
+            object-position: center 20%;
         }
 
-        @media (min-width: 768px) and (max-width: 1023px) {
+        /* Mobile only (<640px): stacked column */
+        .testi-card {
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .testi-img-wrap {
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .testi-portrait {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        /* From 640px up: side-by-side row */
+        @media (min-width: 640px) {
+            .testi-card {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+
+            .testi-img-wrap {
+                flex-shrink: 0;
+                width: 260px;
+                min-width: 260px;
+            }
+
             .testi-portrait {
-                height: 280px;
-                object-position: center 15% !important;
+                width: 260px;
+                height: 320px;
+                border-radius: 16px 0 0 16px;
+                object-position: center 15%;
             }
         }
 
         @media (min-width: 1024px) {
             .testi-img-wrap {
-                align-self: stretch;
+                width: 300px;
+                min-width: 300px;
             }
 
             .testi-portrait {
-                height: 100%;
-                min-height: 300px;
-                max-height: 420px;
-                object-position: center 15% !important;
+                width: 300px;
+                height: 350px;
+                object-position: center 15%;
             }
         }
 
@@ -138,7 +173,7 @@
     <section class="w-full pt-10 pb-16 overflow-hidden bg-black">
 
         {{-- Heading --}}
-        <h2 class="text-4xl font-bold text-center text-white mb-14 md:text-5xl" style="letter-spacing:-0.5px;">
+        <h2 class="text-2xl font-bold text-center text-white mb-14 md:text-5xl" style="letter-spacing:-0.5px;">
             {{ $testiSetting->heading }}
         </h2>
 
@@ -151,14 +186,13 @@
                         style="width: 820px; max-width: 90vw;">
 
                         {{-- Card --}}
-                        <div class="flex flex-col testi-card rounded-2xl lg:flex-row"
-                            style="background: transparent; min-height: 320px;">
+                        <div class="testi-card rounded-2xl">
 
                             {{-- Portrait --}}
-                            <div class="testi-img-wrap flex-shrink-0 w-full lg:w-[280px]">
+                            <div class="testi-img-wrap">
                                 @if ($t->portraitUrl())
                                     <img src="{{ $t->portraitUrl() }}" alt="{{ $t->author_name }}"
-                                        class="object-cover w-full testi-portrait rounded-t-2xl lg:rounded-l-2xl lg:rounded-tr-none lg:rounded-r-none">
+                                        class="testi-portrait">
                                 @endif
                             </div>
 
