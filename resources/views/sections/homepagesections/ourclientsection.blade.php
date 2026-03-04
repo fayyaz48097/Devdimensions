@@ -21,10 +21,15 @@
         <div class="px-6 mx-auto max-w-7xl">
 
             {{-- Heading --}}
-            <h2 class="text-3xl font-semibold tracking-tight text-center text-white md:text-5xl mb-14"
+            <h2 class="block text-3xl tracking-tight text-center text-white md:hidden md:text-5xl mb-14"
                 style="letter-spacing:-0.5px;">
                 {{ $partnerSetting->heading }}
             </h2>
+            <h2 class="hidden text-3xl font-semibold tracking-tight text-center text-white md:block md:text-5xl mb-14"
+                style="letter-spacing:-0.5px;">
+                {{ $partnerSetting->heading }}
+            </h2>
+
 
             {{-- Logo row --}}
             @if ($partners->isNotEmpty())

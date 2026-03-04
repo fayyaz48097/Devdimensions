@@ -192,7 +192,11 @@
 
             {{-- Heading — static --}}
             <div class="mx-auto text-center" style="max-width:926px; width:100%;">
-                <h2 class="text-[28px] md:text-[48px]"
+                <h2 class="hidden md:block text-[28px] md:text-[48px]"
+                    style="font-weight:600; line-height:normal; letter-spacing:-0.96px; margin-bottom:20px; color:#fff;">
+                    Finding All-Star Talent is hard
+                </h2>
+                <h2 class=" md:hidden text-[28px] md:text-[48px]"
                     style="font-weight:500; line-height:normal; letter-spacing:-0.96px; margin-bottom:20px; color:#fff;">
                     Finding All-Star Talent is hard
                 </h2>

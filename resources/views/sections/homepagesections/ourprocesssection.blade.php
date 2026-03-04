@@ -47,7 +47,11 @@
 
         {{-- ── Title ── --}}
         <div class="relative text-center" style="z-index:2; padding-bottom:10px;">
-            <h2 class="m-0 text-white"
+            <h2 class="hidden m-0 font-semibold text-white md:block"
+                style="font-size: clamp(32px, 3.5vw, 52px); letter-spacing: -0.5px; line-height: 1.1;">
+                {{ $procSetting->heading }}
+            </h2>
+            <h2 class="m-0 text-white md:hidden"
                 style="font-size: clamp(32px, 3.5vw, 52px); letter-spacing: -0.5px; line-height: 1.1;">
                 {{ $procSetting->heading }}
             </h2>

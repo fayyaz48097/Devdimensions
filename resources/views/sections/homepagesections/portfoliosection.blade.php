@@ -17,7 +17,7 @@
         <div class="mb-10 port-container">
             {{-- Mobile heading --}}
             <div class="block md:hidden">
-                <h2 class="text-[32px] font-semibold text-white mb-0" style="letter-spacing:-0.8px;">Discover What's
+                <h2 class="text-[32px]  text-white mb-0" style="letter-spacing:-0.8px;">Discover What's
                     Possible</h2>
             </div>
             {{-- Desktop heading + CTA --}}

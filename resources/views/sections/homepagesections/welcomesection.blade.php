@@ -197,7 +197,11 @@
                     <div style="max-width: 606px; width: 100%;">
 
                         {{-- Heading — from DB --}}
-                        <h2 class="text-4xl md:text-5xl"
+                        <h2 class="hidden text-4xl font-semibold md:block md:text-5xl"
+                            style="line-height: normal; letter-spacing: -0.96px; margin-bottom: 20px; color: #fff;">
+                            {{ $welcome->heading }}
+                        </h2>
+                        <h2 class="text-4xl md:hidden md:text-5xl"
                             style="line-height: normal; letter-spacing: -0.96px; margin-bottom: 20px; color: #fff;">
                             {{ $welcome->heading }}
                         </h2>

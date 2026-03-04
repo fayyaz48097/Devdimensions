@@ -173,7 +173,11 @@
     <section class="w-full pt-10 pb-16 overflow-hidden bg-black">
 
         {{-- Heading --}}
-        <h2 class="text-2xl font-bold text-center text-white mb-14 md:text-5xl" style="letter-spacing:-0.5px;">
+        <h2 class="block text-3xl text-center text-white md:hidden mb-14 md:text-5xl" style="letter-spacing:-0.5px;">
+            {{ $testiSetting->heading }}
+        </h2>
+        <h2 class="hidden text-2xl font-semibold text-center text-white md:block mb-14 md:text-5xl"
+            style="letter-spacing:-0.5px;">
             {{ $testiSetting->heading }}
         </h2>
 

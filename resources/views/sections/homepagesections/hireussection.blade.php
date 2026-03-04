@@ -107,12 +107,16 @@
                 <div class="flex items-center w-full px-4 lg:w-1/2">
                     <div style="max-width:510px; width:100%;">
 
-                        <h2 class="m-0 mb-5 text-white"
+                        <h2 class="hidden m-0 mb-5 text-white md:block"
                             style="font-size:clamp(36px,3.5vw,52px); line-height:1.1;
                                letter-spacing:-0.5px; font-weight:600;">
                             {{ $hireSetting->heading }}
                         </h2>
-
+                        <h2 class="block m-0 mb-5 text-white md:hidden"
+                            style="font-size:clamp(36px,3.5vw,52px); line-height:1.1;
+                               letter-spacing:-0.5px; font-weight:500;">
+                            {{ $hireSetting->heading }}
+                        </h2>
                         <p style="font-size:18px; color:#F3F3F3; line-height:1.6; margin-bottom:28px;">
                             {{ $hireSetting->subheading }}
                         </p>
