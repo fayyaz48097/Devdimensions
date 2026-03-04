@@ -155,7 +155,7 @@
                 </div>
 
                 {{-- Footer: Submit --}}
-                <div class="flex items-center justify-end gap-4">
+                <div class="flex items-center justify-center gap-4 md:justify-end">
 
                     {{-- Success message (hidden by default) --}}
                     <p id="modal-success-msg" class="hidden text-sm text-green-400 items-center gap-1.5"
@@ -171,7 +171,7 @@
 
                     {{-- Submit Button --}}
                     <button type="submit" id="modal-submit-btn"
-                        class="group relative inline-flex items-center
+                        class="group relative inline-flex items-center 
                                h-[44px] min-w-[200px]
                                pl-5 pr-[52px]
                                rounded-[5px]
