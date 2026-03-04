@@ -95,7 +95,7 @@
                         @foreach ($faqItems as $i => $faq)
                             <div class="faq-item" id="faq-item-{{ $i }}">
 
-                                <button class="text-[13px] md:text-xl md:font-bold faq-trigger"
+                                <button class="text-[13px] md:text-xl font-bold faq-trigger"
                                     onclick="toggleFaq({{ $i }})" type="button">
                                     <span>{{ $faq->question }}</span>
                                     <svg class="faq-chevron" viewBox="0 0 24 24" fill="none"
