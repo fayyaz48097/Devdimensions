@@ -195,7 +195,7 @@
 
                 <span class="cta-shape-br" aria-hidden="true"></span>
 
-                <h4>{{ $ctaSetting->heading }}</h4>
+                <h4 class="font-medium">{{ $ctaSetting->heading }}</h4>
 
                 <div class="btns-holder">
 
@@ -228,4 +228,4 @@
 
         </div>
     </section>
-@endif {{-- /section active check --}}
+@endif
